@@ -10,14 +10,10 @@
 </template>
 -->
  
- 
-
- 
 <template>
     <div class="configurator">
-      <RowObject></RowObject>
       <div v-for="(RowObject, index) in components" :key="index">
-        <RowObject :data="componentData" />{{ positionIndex }}
+        <RowObject :positionIndex="index+1" :data="componentData" />{{ positionIndex }}
       </div>
       <button @click="addComponent">Weitere Hauptkomponente hinzufügen</button>
     </div>
@@ -32,9 +28,8 @@
     },
     data() {
       return {
-        components: [],
+        components: [this.componentData],
         componentData: {},
-        positionIndex: 1
       };
     },
     methods: {

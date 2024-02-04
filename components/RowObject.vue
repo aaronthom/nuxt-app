@@ -1,7 +1,16 @@
-<script setup>
+<script>
 
-const positionIndex = 1;
 
+export default {
+
+    data() {
+
+    },
+    props: {
+        positionIndex: String
+    }
+
+};
 
 //data arrays for select menus
 const cylinderType = ['Doppelzylinder', 'Knaufzylinder (Knauf außen)', 'Halbzylinder', 'Vorhangschloss 50mm', 'Vorhangschloss 80mm', 'Briefkastenschloss']
@@ -35,7 +44,7 @@ const selectedCheck = ref(true)
     <div class="cylinder-configuration">
         <div class="position">
             <h4 v-show="positionIndex == 1"> Pos.</h4>
-            <UBadge color="sky" size="lg" variant="solid"> {{ this.index }} </UBadge>
+            <UBadge color="sky" size="lg" variant="solid"> {{ positionIndex }} </UBadge>
         </div>
         <div class="door-designation">
             <h4 v-show="positionIndex == 1"> Türbeschreibung</h4>
