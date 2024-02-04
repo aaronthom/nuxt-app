@@ -1,42 +1,27 @@
 <script>
 
-
 export default {
 
     data() {
-
+        return {
+            selectedOption: ref([]),
+            selectedCheck: ref(true),
+            options: ['Not- & Gefahrenfunktion', 'Drehknauf', 'FZG', 'ABH Kl. 1', 'ABH Kl. 2', 'PSH', 'Modular'],
+            
+            
+            selectedCylinderType: ref([]),
+            cylinderType: ['Doppelzylinder', 'Knaufzylinder (Knauf außen)', 'Halbzylinder', 'Vorhangschloss 50mm', 'Vorhangschloss 80mm', 'Briefkastenschloss'],
+            selectedOutside: ref([]),
+            sizes: [30, 35, 40, 45, 50, 55, 60],
+            selectedInside: ref([]),
+            sizes: [30, 35, 40, 45, 50, 55, 60],
+        }
     },
     props: {
-        positionIndex: String
-    }
+        positionIndex: String,
+    },
 
 };
-
-//data arrays for select menus
-const cylinderType = ['Doppelzylinder', 'Knaufzylinder (Knauf außen)', 'Halbzylinder', 'Vorhangschloss 50mm', 'Vorhangschloss 80mm', 'Briefkastenschloss']
-
-const sizes = [30, 35, 40, 45, 50, 55, 60]
-
-const position = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-const empty = []
-
-const options = ['Not- & Gefahrenfunktion', 'Drehknauf', 'FZG', 'ABH Kl. 1', 'ABH Kl. 2', 'PSH', 'Modular']
-
-
-
-// selected values
-const selectedCylinderType = ref(cylinderType[0])
-
-const selectedOutside = ref(sizes[0])
-
-const selectedInside = ref(sizes[0])
-
-const selectedOption = ref([])
-
-const selectedCheck = ref(true)
-
-
 </script>
 
 
@@ -56,17 +41,17 @@ const selectedCheck = ref(true)
         </div>
         <div class="cylinder-type width-200">
             <h4 v-show="positionIndex == 1"> Zylinder-Typ</h4>
-            <USelectMenu color="sky" v-model="selectedCylinderType" :options="cylinderType" />
+            <USelectMenu color="sky" v-model="selectedCylinderType" :options="cylinderType" placeholder="Zylinder wählen..." />
         </div>
         <div class="sizes"
             v-if="selectedCylinderType == 'Doppelzylinder' || selectedCylinderType == 'Knaufzylinder (Knauf außen)' || selectedCylinderType == 'Halbzylinder'">
             <div class="outside">
                 <h4 v-show="positionIndex == 1"> Außen</h4>
-                <USelectMenu color="sky" v-model="selectedOutside" :options="sizes" />
+                <USelectMenu color="sky" v-model="selectedOutside" :options="sizes" placeholder="..." />
             </div>
             <div class="inside">
                 <h4 v-show="positionIndex == 1"> Innen</h4>
-                <USelectMenu color="sky" v-model="selectedInside" :options="sizes" />
+                <USelectMenu color="sky" v-model="selectedInside" :options="sizes" placeholder="..."/>
             </div>
         </div>
         <div class="sizes-empty" v-else>
@@ -89,8 +74,8 @@ const selectedCheck = ref(true)
             <UButton icon="i-heroicons-document-duplicate" size="sm" color="sky" variant="solid" :trailing="false" />
         </div>
         <div class="key-configuration">
-            <h3 class="key-designation">Schlüssel 1 &nbsp;</h3>
-            <Modal></Modal>
+            <h3 v-show="positionIndex == 1" class="key-designation">Schlüssel 1 &nbsp;</h3>
+            <Modal class="modal-key-designation" v-show="positionIndex == 1" ></Modal>
             <UCheckbox class="checkbox" v-model="selectedCheck" name="notifications" color="sky" />
         </div>
     </div>
@@ -107,10 +92,6 @@ const selectedCheck = ref(true)
     gap: 10px;
 }
 
-.cylinder-configuration {
-    margin-top: 80px;
-}
-
 
 .key-configuration {
     display: flex;
@@ -120,6 +101,12 @@ const selectedCheck = ref(true)
 
 .key-designation {
     writing-mode: vertical-rl;
+    position: absolute;
+    margin-top: -140px;
+}
+.modal-key-designation {
+    position: absolute;
+    margin-top: -40px;
 }
 
 .quantity-input {

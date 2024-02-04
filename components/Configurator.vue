@@ -11,11 +11,12 @@
 -->
  
 <template>
+  <h1>Schließanlagen-Konfigurator</h1>
     <div class="configurator">
       <div v-for="(RowObject, index) in components" :key="index">
         <RowObject :positionIndex="index+1" :data="componentData" />{{ positionIndex }}
       </div>
-      <button @click="addComponent">Weitere Hauptkomponente hinzufügen</button>
+      <button @click="addComponent">Weitere Tür hinzufügen</button>
     </div>
   </template>
   
@@ -52,11 +53,12 @@ h1 {
 }
 
 .configurator {
+    margin-top:200px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 50px;
+    gap: 5px;
 }
 </style>
  
