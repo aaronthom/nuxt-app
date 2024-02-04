@@ -1,0 +1,67 @@
+<!--konfigurator: 
+
+-zwei main container -> zeilen container und spalten container
+- zwei main objekte -> Zeile und Spalte
+<template>
+    <h1>Schließanlagen Konfigurator</h1>
+    <div class="configurator">
+         <RowObject class="key-configuration"></RowObject>
+    </div>
+</template>
+-->
+ 
+ 
+
+ 
+<template>
+    <div class="configurator">
+      <RowObject></RowObject>
+      <div v-for="(RowObject, index) in components" :key="index">
+        <RowObject :data="componentData" />{{ positionIndex }}
+      </div>
+      <button @click="addComponent">Weitere Hauptkomponente hinzufügen</button>
+    </div>
+  </template>
+  
+  <script>
+  import RowObject from '@/components/RowObject.vue'; 
+  
+  export default {
+    components: {
+      RowObject
+    },
+    data() {
+      return {
+        components: [],
+        componentData: {},
+        positionIndex: 1
+      };
+    },
+    methods: {
+      addComponent() {
+        this.components.push(this.componentData);
+        positionIndex++;
+      }
+    }
+  };
+  </script>
+
+<style scoped>
+h1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.configurator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
+</style>
+ 
