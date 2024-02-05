@@ -62,6 +62,15 @@ export default {
 
     test() {
       this.rows[1][1].checked = true;
+      this.rows[2][1].checked = true;
+      this.rows[2][2].checked = true;
+      this.rows[3][1].checked = true;
+      this.rows[3][3].checked = true;
+      this.rows[2][3].checked = true;
+      this.rows[1][3].checked = true;
+      this.rows[3][5].checked = true;
+      this.rows[2][5].checked = true;
+      this.rows[1][5].checked = true;
     }
   },
 };
