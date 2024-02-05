@@ -1,64 +1,110 @@
-<!--konfigurator: 
-
--zwei main container -> zeilen container und spalten container
-- zwei main objekte -> Zeile und Spalte
 <template>
-    <h1>Schließanlagen Konfigurator</h1>
-    <div class="configurator">
-         <RowObject class="key-configuration"></RowObject>
-    </div>
-</template>
--->
- 
-<template>
-  <h1>Schließanlagen-Konfigurator</h1>
-    <div class="configurator">
-      <div v-for="(RowObject, index) in components" :key="index">
-        <RowObject :positionIndex="index+1" :data="componentData" />{{ positionIndex }}
+  <div class="configurator">
+    <div class="checkbox-row" v-for="(row, rowIndex) in rows" :key="rowIndex">
+      <RowObject :positionIndex="rowIndex + 1" />
+      <div class="checkbox-item" v-for="(checkbox, colIndex) in row" :key="colIndex">
+        <h3 v-show="rowIndex < 1"
+          style="writing-mode: vertical-rl; position: absolute; margin-top:-7em; margin-left:">Schlüssel</h3>
+        <h3 style="width: 10px;" v-show="rowIndex < 1">{{ rowIndex * 100 + colIndex + 1 }}</h3>
+        <input type="checkbox" name="{{ rowIndex * 100 + colIndex + 1 }}" v-model="checkbox.checked">
+        <!--{{ rowIndex * 100 + colIndex + 1 }}-->
       </div>
-      <button @click="addComponent">Weitere Tür hinzufügen</button>
     </div>
-  </template>
-  
-  <script>
-  import RowObject from '@/components/RowObject.vue'; 
-  
-  export default {
-    components: {
-      RowObject
-    },
-    data() {
-      return {
-        components: [this.componentData],
-        componentData: {},
-      };
-    },
-    methods: {
-      addComponent() {
-        this.components.push(this.componentData);
-        positionIndex++;
+    <div class="door-buttons">
+      <UButton @click="addRow" size="sm" color="sky" variant="solid" :trailing="false">Zylinder +</UButton>
+      <UButton @click="removeRow(rowIndex)" size="sm" color="sky" variant="solid" :trailing="false">Zylinder -</UButton>
+      <UButton @click="addCheckbox" size="sm" color="sky" variant="solid" :trailing="false">Schlüssel +</UButton>
+      <UButton @click="removeCheckbox" size="sm" color="sky" variant="solid" :trailing="false">Schlüssel -</UButton>
+      <UButton @click="test" size="sm" color="sky" variant="solid" :trailing="false">Test</UButton>
+    </div>
+    <div class="key-buttons"></div>
+  </div>
+</template>
+
+<script>
+
+export default {
+
+
+  data() {
+    return {
+      rows: [[{ checked: false }]], // Start with one row and one checkbox
+    };
+  },
+  methods: {
+    addRow() {
+      const numCheckboxes = this.rows[0].length; // Get the number of checkboxes in the first row
+      const newRow = [];
+      for (let i = 0; i < numCheckboxes; i++) {
+        newRow.push({ checked: false }); // Create a new row with the same number of checkboxes as the first row
       }
+      this.rows.push(newRow); // Add the new row
+    },
+    addCheckbox() {
+      this.rows.forEach(row => {
+        row.push({ checked: false }); // Add one checkbox to each row
+      });
+    },
+    removeRow(rowIndex) {
+      if (this.rows.length > 1) {
+        this.rows.splice(rowIndex, 1); // Remove the row at the specified index
+      } else {
+        alert('Sie können keine Zeilen mehr entfernen.');
+      }
+    },
+    removeCheckbox() {
+      this.rows.forEach(row => {
+        if (row.length > 1) {
+          row.pop(); // Remove the last checkbox from each row if more than one exists
+        }
+      });
+    },
+
+    test() {
+      this.rows[1][1].checked = true;
     }
-  };
-  </script>
+  },
+};
+</script>
 
 <style scoped>
+.checkbox-row {
+  display: flex;
+  /* Display rows horizontally */
+  margin-bottom: 10px;
+  /* Spacing between rows */
+}
+
+.checkbox-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+  margin-left: 10px;
+  /* Spacing between checkboxes */
+}
+
 h1 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
-    font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  font-size: 30px;
+  font-weight: 700;
 }
 
 .configurator {
-    margin-top:200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
+  margin-top: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.door-buttons {
+  display: flex;
+  gap: 10px;
 }
 </style>
- 
