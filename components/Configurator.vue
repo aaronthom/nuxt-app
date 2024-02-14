@@ -3,8 +3,8 @@
     <div class="checkbox-row" v-for="(row, rowIndex) in rows" :key="rowIndex">
       <RowObject :positionIndex="rowIndex + 1" />
       <div class="checkbox-item" v-for="(checkbox, colIndex) in row" :key="colIndex">
-        <h3 v-show="rowIndex < 1"
-          style="writing-mode: vertical-rl; position: absolute; margin-top:-7em; margin-left:">Schlüssel</h3>
+        <h3 v-show="rowIndex < 1" style="writing-mode: vertical-rl; position: absolute; margin-top:-7em; margin-left:">
+          Schlüssel</h3>
         <h3 style="width: 10px;" v-show="rowIndex < 1">{{ rowIndex * 100 + colIndex + 1 }}</h3>
         <input type="checkbox" name="{{ rowIndex * 100 + colIndex + 1 }}" v-model="checkbox.checked">
         <!--{{ rowIndex * 100 + colIndex + 1 }}-->
@@ -12,10 +12,13 @@
     </div>
     <div class="door-buttons">
       <UButton @click="addRow" size="sm" color="sky" variant="solid" :trailing="false">Zylinder +</UButton>
-      <UButton @click="removeRow(rowIndex)" size="sm" color="sky" variant="solid" :trailing="false">Zylinder -</UButton>
+      <UButton @click="removeRow" size="sm" color="sky" variant="solid" :trailing="false">Zylinder -</UButton>
       <UButton @click="addCheckbox" size="sm" color="sky" variant="solid" :trailing="false">Schlüssel +</UButton>
       <UButton @click="removeCheckbox" size="sm" color="sky" variant="solid" :trailing="false">Schlüssel -</UButton>
       <UButton @click="test" size="sm" color="sky" variant="solid" :trailing="false">Test</UButton>
+      <UButton @click="duplicateRow(rowIndex)" size="sm" color="sky" variant="solid" :trailing="false">Dupl</UButton>
+      <UButton @click="console.log(RowObject)" size="sm" color="sky" variant="solid" :trailing="false">Konsole</UButton>
+      <UButton @click="deleteRow" size="sm" color="sky" variant="solid" :trailing="false">splice</UButton>
     </div>
     <div class="key-buttons"></div>
   </div>
@@ -45,9 +48,23 @@ export default {
         row.push({ checked: false }); // Add one checkbox to each row
       });
     },
-    removeRow(rowIndex) {
+    /*removeRow(rowIndex) {
       if (this.rows.length > 1) {
         this.rows.splice(rowIndex, 1); // Remove the row at the specified index
+      } else {
+        alert('Sie können keine Zeilen mehr entfernen.');
+      }
+    }, */
+    removeRow() {
+      if (this.rows.length > 1) {
+        this.rows.pop();
+      } else {
+        alert('Sie können keine Zeilen mehr entfernen.');
+      }
+    },
+    deleteRow() {
+      if (this.rows.length > 1) {
+        this.rows.splice( 5 , 1);
       } else {
         alert('Sie können keine Zeilen mehr entfernen.');
       }
@@ -59,6 +76,18 @@ export default {
         }
       });
     },
+    duplicateRow(rowIndex) {
+      // Erstellen einer tiefen Kopie der Zeile, die dupliziert werden soll
+      const newRow = JSON.parse(JSON.stringify(this.rows[rowIndex]));
+      // Hinzufügen der duplizierten Zeile in das Array der Zeilen
+      this.rows.splice(rowIndex + 1, 0, newRow);
+    },
+
+    /*duplicateRow(rowIndex) {
+      const newRow = this.rows[rowIndex].slice();
+
+      this.rows.splice(rowIndex + 1, 0, newRow);
+    },*/
 
     test() {
       this.rows[1][1].checked = true;
