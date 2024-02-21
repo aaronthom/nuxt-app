@@ -2,6 +2,7 @@
   <div class="configurator">
     <div class="checkbox-row" v-for="(row, rowIndex) in rows" :key="rowIndex">
       <RowObject :positionIndex="rowIndex + 1" />
+      
       <div
         class="checkbox-item"
         v-for="(checkbox, colIndex) in row"

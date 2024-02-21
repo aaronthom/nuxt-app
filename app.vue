@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import Configurator from "./components/Configurator.vue";
 import Matrix from "./components/Matrix.vue";
+import newMatrix from "./components/newMatrix.vue";
 </script>
 <template>
-  <!--   <Configurator></Configurator>  -->
-  <Matrix></Matrix> 
+  <!--      <Matrix></Matrix>  -->
+  <NewMatrix></NewMatrix>
 </template>
 
 <style>
