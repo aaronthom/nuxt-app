@@ -2,23 +2,86 @@
   <div class="configurator">
     <div class="checkbox-row" v-for="(row, rowIndex) in rows" :key="rowIndex">
       <RowObject :positionIndex="rowIndex + 1" />
-      <div class="checkbox-item" v-for="(checkbox, colIndex) in row" :key="colIndex">
-        <h3 v-show="rowIndex < 1" style="writing-mode: vertical-rl; position: absolute; margin-top:-7em; margin-left:">
-          Schlüssel</h3>
-        <h3 style="width: 10px;" v-show="rowIndex < 1">{{ rowIndex * 100 + colIndex + 1 }}</h3>
-        <input type="checkbox" name="{{ rowIndex * 100 + colIndex + 1 }}" v-model="checkbox.checked">
+      <div
+        class="checkbox-item"
+        v-for="(checkbox, colIndex) in row"
+        :key="colIndex"
+      >
+        <h3
+          v-show="rowIndex < 1"
+          style="
+            writing-mode: vertical-rl;
+            position: absolute;
+            margin-top: -14em;
+            margin-left: ;
+          "
+        >
+          Schlüssel {{ rowIndex * 100 + colIndex + 1 }}
+        </h3>
+        <UButton
+          icon="i-heroicons-pencil"
+          v-show="rowIndex < 1"
+          size="sm"
+          color="sky"
+          variant="solid"
+          :trailing="false"
+          style="
+            writing-mode: vertical-rl;
+            position: absolute;
+            margin-top: -4em;
+            margin-left: ;
+          "
+        />
+        <br v-show="rowIndex < 1"/>
+        <UCheckbox
+          name="{{ rowIndex * 100 + colIndex + 1 }}"
+          v-model="checkbox.checked"
+        />
         <!--{{ rowIndex * 100 + colIndex + 1 }}-->
       </div>
     </div>
     <div class="door-buttons">
-      <UButton @click="addRow" size="sm" color="sky" variant="solid" :trailing="false">Zylinder +</UButton>
-      <UButton @click="removeRow" size="sm" color="sky" variant="solid" :trailing="false">Zylinder -</UButton>
-      <UButton @click="addCheckbox" size="sm" color="sky" variant="solid" :trailing="false">Schlüssel +</UButton>
-      <UButton @click="removeCheckbox" size="sm" color="sky" variant="solid" :trailing="false">Schlüssel -</UButton>
-      <UButton @click="test" size="sm" color="sky" variant="solid" :trailing="false">Test</UButton>
-      <UButton @click="duplicateRow(rowIndex)" size="sm" color="sky" variant="solid" :trailing="false">Dupl</UButton>
-      <UButton @click="console.log(RowObject)" size="sm" color="sky" variant="solid" :trailing="false">Konsole</UButton>
-      <UButton @click="deleteRow" size="sm" color="sky" variant="solid" :trailing="false">splice</UButton>
+      <UButton
+        @click="addRow"
+        size="sm"
+        color="sky"
+        variant="solid"
+        :trailing="false"
+        >Zylinder +</UButton
+      >
+      <UButton
+        @click="removeRow"
+        size="sm"
+        color="sky"
+        variant="solid"
+        :trailing="false"
+        >Zylinder -</UButton
+      >
+      <UButton
+        @click="addCheckbox"
+        size="sm"
+        color="sky"
+        variant="solid"
+        :trailing="false"
+        >Schlüssel +</UButton
+      >
+      <UButton
+        @click="removeCheckbox"
+        size="sm"
+        color="sky"
+        variant="solid"
+        :trailing="false"
+        >Schlüssel -</UButton
+      >
+      <UButton
+        @click="test"
+        size="sm"
+        color="sky"
+        variant="solid"
+        :trailing="false"
+        >Test</UButton
+      >
+   
     </div>
     <div class="key-buttons"></div>
   </div>
@@ -26,9 +89,9 @@
 
 <script>
 
+const isOpen = ref(false)
+
 export default {
-
-
   data() {
     return {
       rows: [[{ checked: false }]], // Start with one row and one checkbox
@@ -44,7 +107,7 @@ export default {
       this.rows.push(newRow); // Add the new row
     },
     addCheckbox() {
-      this.rows.forEach(row => {
+      this.rows.forEach((row) => {
         row.push({ checked: false }); // Add one checkbox to each row
       });
     },
@@ -59,18 +122,18 @@ export default {
       if (this.rows.length > 1) {
         this.rows.pop();
       } else {
-        alert('Sie können keine Zeilen mehr entfernen.');
+        alert("Sie können keine Zeilen mehr entfernen.");
       }
     },
     deleteRow() {
       if (this.rows.length > 1) {
-        this.rows.splice( 5 , 1);
+        this.rows.splice(5, 1);
       } else {
-        alert('Sie können keine Zeilen mehr entfernen.');
+        alert("Sie können keine Zeilen mehr entfernen.");
       }
     },
     removeCheckbox() {
-      this.rows.forEach(row => {
+      this.rows.forEach((row) => {
         if (row.length > 1) {
           row.pop(); // Remove the last checkbox from each row if more than one exists
         }
@@ -100,7 +163,7 @@ export default {
       this.rows[3][5].checked = true;
       this.rows[2][5].checked = true;
       this.rows[1][5].checked = true;
-    }
+    },
   },
 };
 </script>
