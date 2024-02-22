@@ -119,6 +119,8 @@ not able to initialize a new nuxt project
         <USelectMenu
           v-model="row.options"
           :options="cylinderOptions"
+          multiple
+          @click="resetOptions(rowIndex)"
           color="sky"
           placeholder="Optionen auswählen"
           style="width: 200px"
@@ -153,6 +155,31 @@ not able to initialize a new nuxt project
         v-for="(checkbox, colIndex) in row"
         :key="colIndex"
       >
+        <h3
+          v-show="rowIndex < 1"
+          style="
+            writing-mode: vertical-rl;
+            position: absolute;
+            margin-top: -14em;
+            margin-left: ;
+          "
+        >
+          Schlüssel {{ rowIndex * 100 + colIndex + 1 }}
+        </h3>
+        <UButton
+          icon="i-heroicons-pencil"
+          v-show="rowIndex < 1"
+          size="sm"
+          color="sky"
+          variant="solid"
+          :trailing="false"
+          style="
+            writing-mode: vertical-rl;
+            position: absolute;
+            margin-top: -4em;
+            margin-left: ;
+          "
+        />
         <br v-show="rowIndex < 1" />
         <UCheckbox
           name="{{ rowIndex * 100 + colIndex + 1 }}"
@@ -211,7 +238,6 @@ const initialize = () => {
   this.rows[this.rows.length - 1].options = [];
 };
 import { ref } from "vue";
-import { onUpdated } from "vue";
 
 export default {
   data() {
@@ -225,12 +251,11 @@ export default {
             type: "",
             outside: "",
             inside: "",
-            options: [], //doenst work with ref neither
+            options: ref([]), //doenst work with ref neither
             checked: false,
           },
         ],
       ],
-
       cylinderType: [
         "Doppelzylinder",
         "Knaufzylinder (Knauf außen)",
@@ -240,6 +265,7 @@ export default {
         "Briefkastenschloss",
       ],
       sizes: [30, 35, 40, 45, 50, 55, 60],
+      selectedOptions: ref([]),
       cylinderOptions: [
         "Not- & Gefahrenfunktion",
         "Drehknauf",
@@ -252,6 +278,9 @@ export default {
     };
   },
   methods: {
+    resetOptions(rowIndex) {
+      this.rows[rowIndex].options = [];
+    },
     addRow() {
       const numCheckboxes = this.rows[0].length; // Get the number of checkboxes in the first row
       const newRow = [];
@@ -259,7 +288,7 @@ export default {
         newRow.push({ checked: false }); // Create a new row with the same number of checkboxes as the first row
       }
       this.rows.push(newRow); // Add the new row
-      // this.rows[this.rows.length - 1].options = []; // setting the empty array for each option /// very bad solution but no other idea at the moment
+      //this.rows[this.rows.length - 1].options = []; // setting the empty array for each option /// very bad solution but no other idea at the moment
     },
 
     addCheckbox() {
@@ -336,19 +365,24 @@ export default {
       this.rows[1].type = "Doppelzylinder";
       this.rows[1].inside = "35";
       this.rows[1].outside = "35";
-      this.rows[10].options = [];
+      this.rows[1].options = [
+        "Not- & Gefahrenfunktion",
+        "Drehknauf",
+        "FZG",
+        "ABH Kl. 1"];
       this.rows[1][1].checked = true;
+      this.rows[1][2].checked = true;
+      this.rows[3][2].checked = true;
+      this.rows[1][4].checked = true;
     },
   },
 };
 </script>
 
+
 <style scoped>
 .configurator {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+ 
   margin: 310px 0 0 0;
 }
 .checkbox-row {
