@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <!-- Current problems:
 
 
@@ -20,15 +14,6 @@ not able to initialize a new nuxt project
 
 
 -->
-
-
-
-
-
-
-
-
-
 
 <template>
   <div class="configurator">
@@ -276,11 +261,13 @@ export default {
       this.rows.push(newRow); // Add the new row
       // this.rows[this.rows.length - 1].options = []; // setting the empty array for each option /// very bad solution but no other idea at the moment
     },
+
     addCheckbox() {
       this.rows.forEach((row) => {
         row.push({ checked: false }); // Add one checkbox to each row
       });
     },
+
     removeRow() {
       const lastRowIndex = this.rows.length - 1; // Index der letzten Zeile
       if (lastRowIndex > 0) {
@@ -290,6 +277,7 @@ export default {
         alert("Hier ist Schluss!");
       }
     },
+
     removeCheckbox() {
       this.rows.forEach((row) => {
         if (row.length > 1) {
@@ -297,12 +285,42 @@ export default {
         }
       });
     },
-    duplicateRow(rowIndex) {
+
+    duplicateRowLightCopy(rowIndex) {
+      //this function is used to duplicate a row with a light copy -> we need a deep copy of the row
+      const newRow = Object.assign({}, this.rows[rowIndex]);
+      this.rows.splice(rowIndex + 1, 0, newRow);
+    },
+
+    duplicateRowJSON(rowIndex) {
       const currentRow = this.rows[rowIndex]; // Aktuelle Zeile
       const newRow = JSON.parse(JSON.stringify(currentRow)); // Tiefe Kopie der aktuellen Zeile
       this.rows.splice(rowIndex + 1, 0, newRow); // Füge die neue Zeile nach der aktuellen Zeile ein
     },
-    // Funktion zum Löschen einer Zeile
+
+    duplicateRow(rowIndex) {
+      const currentRow = this.rows[rowIndex]; // Aktuelle Zeile
+      const newRow = this.deepCopy(currentRow); // Tiefe Kopie der aktuellen Zeile
+      this.rows.splice(rowIndex + 1, 0, newRow); // Füge die neue Zeile nach der aktuellen Zeile ein
+    },
+
+    // Funktion zum Erstellen einer tiefen Kopie eines Objekts
+    deepCopy(obj) {
+      if (typeof obj !== "object" || obj === null) {
+        return obj; // Rückgabe des Objekts selbst, wenn es kein Objekt ist oder null ist
+      }
+
+      const copy = Array.isArray(obj) ? [] : {}; // Erstellen eines leeren Arrays für Arrays oder eines leeren Objekts für Objekte
+
+      for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          copy[key] = this.deepCopy(obj[key]); // Rekursives Kopieren von Eigenschaften des Objekts
+        }
+      }
+
+      return copy; // Rückgabe der tiefen Kopie des Objekts
+    },
+
     deleteRow(rowIndex) {
       if (rowIndex > 0) {
         this.rows.splice(rowIndex, 1); // Entferne die Zeile an der gegebenen Indexposition
