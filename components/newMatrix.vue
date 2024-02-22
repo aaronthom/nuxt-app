@@ -180,7 +180,7 @@ not able to initialize a new nuxt project
             margin-left: ;
           "
         />
-        <br v-show="rowIndex < 1" />
+        <p v-show="rowIndex < 1">&nbsp;</p>
         <UCheckbox
           name="{{ rowIndex * 100 + colIndex + 1 }}"
           v-model="checkbox.checked"
