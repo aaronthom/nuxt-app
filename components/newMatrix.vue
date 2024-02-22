@@ -242,6 +242,7 @@ import { ref } from "vue";
 export default {
   data() {
     return {
+      showModal: false,
       rows: [
         [
           {
@@ -369,7 +370,8 @@ export default {
         "Not- & Gefahrenfunktion",
         "Drehknauf",
         "FZG",
-        "ABH Kl. 1"];
+        "ABH Kl. 1",
+      ];
       this.rows[1][1].checked = true;
       this.rows[1][2].checked = true;
       this.rows[3][2].checked = true;
@@ -379,10 +381,8 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .configurator {
- 
   margin: 310px 0 0 0;
 }
 .checkbox-row {
