@@ -16,220 +16,222 @@ not able to initialize a new nuxt project
 -->
 
 <template>
-  <div class="configurator">
-    <div class="checkbox-row" v-for="(row, rowIndex) in rows" :key="rowIndex">
-      <div class="position">
-        <h3 v-show="rowIndex < 1">Pos.</h3>
-        <UBadge
-          v-model="row.position"
-          color="sky"
-          size="lg"
-          variant="solid"
-          style="width: 30px"
-        >
-          {{ rowIndex + 1 }}
-        </UBadge>
-        <!-- Position -->
-      </div>
-
-      <div class="door-designation">
-        <h3 v-show="rowIndex < 1">Türbezeichnung</h3>
-        <UInput
-          v-model="row.doorDesignation"
-          color="sky"
-          size="sm"
-          variant="outline"
-          placeholder="z.B. Haupteingang"
-          style="width: 200px"
-        />
-      </div>
-
-      <div class="quantity">
-        <h3 v-show="rowIndex < 1">Anzahl</h3>
-        <UInput
-          v-model="row.quantity"
-          class="quantity-input"
-          color="sky"
-          size="sm"
-          type="number"
-          variant="outline"
-          style="width: 50px"
-        />
-      </div>
-
-      <div class="cylinder-type">
-        <h3 v-show="rowIndex < 1">Zylinder-Typ</h3>
-        <USelectMenu
-          v-model="row.type"
-          color="sky"
-          :options="cylinderType"
-          placeholder="Zylinder wählen..."
-          style="width: 300px"
-        />
-      </div>
-
-      <div
-        class="sizes"
-        v-if="
-          row.type == 'Doppelzylinder' ||
-          row.type == 'Knaufzylinder (Knauf außen)' ||
-          row.type == 'Halbzylinder'
-        "
-      >
-        <div class="outside">
-          <h3 v-show="rowIndex < 1">Außen</h3>
-          <USelectMenu
-            v-model="row.outside"
+  <div class="flex-container">
+    <div class="configurator">
+      <div class="checkbox-row" v-for="(row, rowIndex) in rows" :key="rowIndex">
+        <div class="position">
+          <h3 v-show="rowIndex < 1">Pos.</h3>
+          <UBadge
+            v-model="row.position"
             color="sky"
-            :options="sizes"
-            placeholder="..."
-            style="width: 80px"
+            size="lg"
+            variant="solid"
+            style="
+              width: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+          >
+            {{ rowIndex + 1 }}
+          </UBadge>
+          <!-- Position -->
+        </div>
+        <div class="door-designation">
+          <h3 v-show="rowIndex < 1">Türbezeichnung</h3>
+          <UInput
+            v-model="row.doorDesignation"
+            color="grey"
+            size="sm"
+            variant="outline"
+            placeholder="z.B. Haupteingang"
+            style="width: 200px"
           />
         </div>
-
-        <div class="inside">
-          <h3 v-show="rowIndex < 1">Innen</h3>
+        <div class="quantity">
+          <h3 v-show="rowIndex < 1">Anzahl</h3>
+          <UInput
+            v-model="row.quantity"
+            class="quantity-input"
+            color="grey"
+            size="sm"
+            type="number"
+            variant="outline"
+            style="width: 70px"
+          />
+        </div>
+        <div class="cylinder-type">
+          <h3 v-show="rowIndex < 1">Zylinder-Typ</h3>
           <USelectMenu
-            v-model="row.inside"
+            v-model="row.type"
+            color="grey"
+            :options="cylinderType"
+            placeholder="Zylinder wählen..."
+            style="width: 200px"
+          />
+        </div>
+        <div
+          class="sizes"
+          v-if="
+            row.type == 'Doppelzylinder' ||
+            row.type == 'Knaufzylinder (Knauf außen)' ||
+            row.type == 'Halbzylinder'
+          "
+        >
+          <div class="outside">
+            <h3 v-show="rowIndex < 1">Außen</h3>
+            <USelectMenu
+              v-model="row.outside"
+              color="grey"
+              :options="sizes"
+              placeholder="..."
+              style="width: 70px"
+            />
+          </div>
+          <div class="inside">
+            <h3 v-show="rowIndex < 1">Innen</h3>
+            <USelectMenu
+              v-model="row.inside"
+              color="grey"
+              :options="sizes"
+              placeholder="..."
+              style="width: 70px"
+            />
+          </div>
+        </div>
+        <div class="sizes-empty" v-else>
+          <div class="outside">
+            <h3 v-show="rowIndex < 1">Außen</h3>
+            <UBadge color="grey" variant="outline" size="lg" style="width: 70px"
+              >&nbsp;N/A&nbsp;</UBadge
+            >
+          </div>
+          <div class="inside">
+            <h3 v-show="rowIndex < 1">Innen</h3>
+            <UBadge color="grey" variant="outline" size="lg" style="width: 70px"
+              >&nbsp;N/A&nbsp;</UBadge
+            >
+          </div>
+        </div>
+        <div class="options">
+          <h3 v-show="rowIndex < 1">Optionen</h3>
+          <USelectMenu
+            v-model="row.options"
+            :options="cylinderOptions"
+            multiple
+            @click="resetOptions(rowIndex)"
+            color="grey"
+            placeholder="Optionen auswählen"
+            style="width: 200px"
+          />
+          <!--   multiple __________________   ___________________________________________ -->
+        </div>
+        <div class="duplicate">
+          <br v-show="rowIndex < 1" />
+          <UButton
+            icon="i-heroicons-document-duplicate"
+            size="sm"
             color="sky"
-            :options="sizes"
-            placeholder="..."
-            style="width: 80px"
+            variant="solid"
+            :trailing="false"
+            @click="duplicateRow(rowIndex)"
+          />
+        </div>
+        <div class="delete">
+          <br v-show="rowIndex < 1" />
+          <UButton
+            icon="i-heroicons-trash"
+            size="sm"
+            color="sky"
+            variant="solid"
+            :trailing="false"
+            @click="deleteRow(rowIndex)"
+          />
+        </div>
+        <div
+          class="checkbox-item"
+          v-for="(checkbox, colIndex) in row"
+          :key="colIndex"
+        >
+          <h3
+            v-show="rowIndex < 1"
+            style="
+              writing-mode: vertical-rl;
+              position: absolute;
+              margin-top: -14em;
+              margin-left: ;
+            "
+          >
+            Schlüssel {{ rowIndex * 100 + colIndex + 1 }}
+          </h3>
+          <UButton
+            icon="i-heroicons-pencil"
+            v-show="rowIndex < 1"
+            size="sm"
+            color="sky"
+            variant="solid"
+            :trailing="false"
+            style="
+              writing-mode: vertical-rl;
+              position: absolute;
+              margin-top: -4em;
+              margin-left: ;
+            "
+          />
+          <p v-show="rowIndex < 1">&nbsp;</p>
+          <UCheckbox
+            name="{{ rowIndex * 100 + colIndex + 1 }}"
+            v-model="checkbox.checked"
+            color="blue"
           />
         </div>
       </div>
-
-      <div class="sizes-empty" v-else>
-        <div class="outside">
-          <h3 v-show="rowIndex < 1">Außen</h3>
-          <UBadge color="sky" variant="outline" size="lg" style="width: 80px"
-            >&nbsp;N/A&nbsp;</UBadge
-          >
-        </div>
-        <div class="inside">
-          <h3 v-show="rowIndex < 1">Innen</h3>
-          <UBadge color="sky" variant="outline" size="lg" style="width: 80px"
-            >&nbsp;N/A&nbsp;</UBadge
-          >
-        </div>
-      </div>
-
-      <div class="options">
-        <h3 v-show="rowIndex < 1">Optionen</h3>
-        <USelectMenu
-          v-model="row.options"
-          :options="cylinderOptions"
-          multiple
-          @click="resetOptions(rowIndex)"
-          color="sky"
-          placeholder="Optionen auswählen"
-          style="width: 200px"
-        />
-        <!--   multiple __________________   ___________________________________________ -->
-      </div>
-      <div class="duplicate">
-        <br v-show="rowIndex < 1" />
+      <div class="buttons">
         <UButton
-          icon="i-heroicons-document-duplicate"
+          class="add-door-button"
+          @click="addRow"
           size="sm"
-          color="sky"
+          color="amber"
           variant="solid"
           :trailing="false"
-          @click="duplicateRow(rowIndex)"
-        />
-      </div>
-      <div class="delete">
-        <br v-show="rowIndex < 1" />
-        <UButton
-          icon="i-heroicons-trash"
-          size="sm"
-          color="sky"
-          variant="solid"
-          :trailing="false"
-          @click="deleteRow(rowIndex)"
-        />
-      </div>
-
-      <div
-        class="checkbox-item"
-        v-for="(checkbox, colIndex) in row"
-        :key="colIndex"
-      >
-        <h3
-          v-show="rowIndex < 1"
-          style="
-            writing-mode: vertical-rl;
-            position: absolute;
-            margin-top: -14em;
-            margin-left: ;
-          "
+          >Weitere Tür</UButton
         >
-          Schlüssel {{ rowIndex * 100 + colIndex + 1 }}
-        </h3>
-        <UButton
-          icon="i-heroicons-pencil"
-          v-show="rowIndex < 1"
+        <!--<UButton
+          @click="removeRow(rowIndex)"
           size="sm"
           color="sky"
           variant="solid"
           :trailing="false"
-          style="
-            writing-mode: vertical-rl;
-            position: absolute;
-            margin-top: -4em;
-            margin-left: ;
-          "
-        />
-        <p v-show="rowIndex < 1">&nbsp;</p>
-        <UCheckbox
-          name="{{ rowIndex * 100 + colIndex + 1 }}"
-          v-model="checkbox.checked"
-        />
+          >Zylinder -</UButton
+        > -->
+        <UButton
+          @click="removeCheckbox"
+          size="sm"
+          color="amber"
+          variant="solid"
+          :trailing="false"
+          >Schlüssel -</UButton
+        >
+        <UButton
+          class="test-button"
+          @click="test"
+          size="sm"
+          color="amber"
+          variant="solid"
+          :trailing="false"
+          >Test</UButton
+        >
       </div>
     </div>
-
-    <div class="buttons">
-      <UButton
-        @click="addRow"
-        size="sm"
-        color="sky"
-        variant="solid"
-        :trailing="false"
-        >Zylinder +</UButton
-      >
-      <UButton
-        @click="removeRow(rowIndex)"
-        size="sm"
-        color="sky"
-        variant="solid"
-        :trailing="false"
-        >Zylinder -</UButton
-      >
-      <UButton
-        @click="addCheckbox"
-        size="sm"
-        color="sky"
-        variant="solid"
-        :trailing="false"
-        >Schlüssel +</UButton
-      >
-      <UButton
-        @click="removeCheckbox"
-        size="sm"
-        color="sky"
-        variant="solid"
-        :trailing="false"
-        >Schlüssel -</UButton
-      >
-      <UButton
-        @click="test"
-        size="sm"
-        color="sky"
-        variant="solid"
-        :trailing="false"
-        >Test</UButton
-      >
-    </div>
+    <UButton
+      class="add-key-button"
+      @click="addCheckbox"
+      size="sm"
+      color="amber"
+      variant="solid"
+      :trailing="false"
+      >Schlüssel +</UButton
+    >
   </div>
 </template>
 
@@ -382,6 +384,11 @@ export default {
 </script>
 
 <style scoped>
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
 .configurator {
   margin: 310px 0 0 0;
 }
@@ -405,5 +412,24 @@ export default {
   display: flex; /* Display buttons horizontally */
   justify-content: flex-start; /* Align buttons to the right */
   gap: 10px; /* Spacing between buttons */
+}
+
+.add-door-button {
+  font-weight: 600;
+  height: 36px;
+  width: 100px;
+}
+
+.test-button {
+  height: auto;
+}
+
+.add-key-button {
+  margin: 294px 0 0 2px;
+  writing-mode: vertical-rl;
+  display: flex;
+  justify-content: center; /* Align buttons to the right */
+  font-weight: 600;
+  height: 12%;
 }
 </style>
