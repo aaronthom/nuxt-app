@@ -154,6 +154,7 @@ not able to initialize a new nuxt project
           :key="colIndex"
         >
           <h3
+          class="key-name"
             v-show="rowIndex < 1"
             style="
               writing-mode: vertical-rl;
@@ -162,9 +163,10 @@ not able to initialize a new nuxt project
               margin-left: ;
             "
           >
-            Schlüssel {{ rowIndex * 100 + colIndex + 1 }}
+            {{  value }}
           </h3>
           <UButton
+            @click="toggleModal(rowIndex, colIndex, checkbox)"
             icon="i-heroicons-pencil"
             v-show="rowIndex < 1"
             size="sm"
@@ -189,12 +191,13 @@ not able to initialize a new nuxt project
       <div class="buttons">
         <UButton
           class="add-door-button"
+          icon="i-heroicons-plus-16-solid"
           @click="addRow"
           size="sm"
           color="amber"
           variant="solid"
           :trailing="false"
-          >Weitere Tür</UButton
+          >Tür hinzufügen</UButton
         >
         <!--<UButton
           @click="removeRow(rowIndex)"
@@ -225,13 +228,20 @@ not able to initialize a new nuxt project
     </div>
     <UButton
       class="add-key-button"
+      icon="i-heroicons-plus-16-solid"
       @click="addCheckbox"
       size="sm"
       color="amber"
       variant="solid"
       :trailing="false"
-      >Schlüssel +</UButton
+      >Schlüssel hinzufügen</UButton
     >
+    <UModal v-model="showModal">
+      <div class="p-4">
+        <Placeholder class="h-48" />
+        <UInput v-model="value" />
+      </div>
+    </UModal>
   </div>
 </template>
 
@@ -245,6 +255,7 @@ export default {
   data() {
     return {
       showModal: false,
+      value: '',
       rows: [
         [
           {
@@ -284,6 +295,11 @@ export default {
     resetOptions(rowIndex) {
       this.rows[rowIndex].options = [];
     },
+
+    toggleModal() {
+      this.showModal = !this.showModal;
+    },
+
     addRow() {
       const numCheckboxes = this.rows[0].length; // Get the number of checkboxes in the first row
       const newRow = [];
@@ -387,10 +403,11 @@ export default {
 .flex-container {
   display: flex;
   flex-direction: row;
+  margin: 250px 0px 0px 30px;
 }
 
 .configurator {
-  margin: 310px 0 0 0;
+  
 }
 .checkbox-row {
   display: flex; /* Display rows horizontally */
@@ -415,9 +432,11 @@ export default {
 }
 
 .add-door-button {
+  display: flex;
+  justify-content: center;
   font-weight: 600;
   height: 36px;
-  width: 100px;
+  width: 200px;
 }
 
 .test-button {
@@ -425,11 +444,18 @@ export default {
 }
 
 .add-key-button {
-  margin: 294px 0 0 2px;
+  margin: 23px 0 0 2px;
   writing-mode: vertical-rl;
   display: flex;
   justify-content: center; /* Align buttons to the right */
   font-weight: 600;
-  height: 12%;
+  height: 200px;
 }
+
+.key-name {
+  width: 30px;
+  overflow: hidden; 
+  
+}
+/*               ------------------------------------------------------- here  ----------------------- */ 
 </style>
