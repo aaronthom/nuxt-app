@@ -186,7 +186,7 @@ not able to initialize a new nuxt project
             v-model="checkbox.checked"
             color="blue"
           />
-          <UButton v-show="rowIndex == this.rows.length - 1"
+          <UButton 
             @click="deleteKey(rowIndex, colIndex)"
             icon="i-heroicons-trash"
             size="sm"
@@ -390,13 +390,14 @@ export default {
       }
     },
 
-    /*deleteKey(rowIndex, colIndex) {
-      // Überprüfen Sie, ob die Zeile und die Spalte existieren
-      if (this.rows[rowIndex] && this.rows[rowIndex][colIndex]) {
-        // Löschen Sie die Spalte aus der Zeile
-        this.rows[rowIndex].splice(colIndex);
-      }
-    }, */
+    deleteKey(rowIndex, colIndex) {
+    // Überprüfen Sie, ob die Zeile existiert
+    if (this.rows[rowIndex]) {
+      // Entfernen Sie die Spalte aus der Zeile
+      // Da Sie die gesamte Spalte löschen möchten, verwenden Sie splice auf der Zeile
+      this.rows[rowIndex].splice(colIndex, 1);
+    }
+  },
 
     test() {
       this.rows[1].doorDesignation = "Dies ist ein Test";
