@@ -154,7 +154,7 @@ not able to initialize a new nuxt project
           :key="colIndex"
         >
           <h3
-          class="key-name"
+            class="key-name"
             v-show="rowIndex < 1"
             style="
               writing-mode: vertical-rl;
@@ -163,7 +163,7 @@ not able to initialize a new nuxt project
               margin-left: ;
             "
           >
-            {{  value }}
+            {{ value }}
           </h3>
           <UButton
             @click="toggleModal(rowIndex, colIndex, checkbox)"
@@ -186,6 +186,18 @@ not able to initialize a new nuxt project
             v-model="checkbox.checked"
             color="blue"
           />
+          <UButton v-show="rowIndex == this.rows.length - 1"
+            @click="deleteKey(rowIndex, colIndex)"
+            icon="i-heroicons-trash"
+            size="sm"
+            color="red"
+            variant="solid"
+            :trailing="false"
+            style="
+             
+              /* Passen Sie den Abstand nach Bedarf an */
+            "
+          />
         </div>
       </div>
       <div class="buttons">
@@ -206,7 +218,7 @@ not able to initialize a new nuxt project
           variant="solid"
           :trailing="false"
           >Zylinder -</UButton
-        > -->
+        > 
         <UButton
           @click="removeCheckbox"
           size="sm"
@@ -223,7 +235,7 @@ not able to initialize a new nuxt project
           variant="solid"
           :trailing="false"
           >Test</UButton
-        >
+        > -->
       </div>
     </div>
     <UButton
@@ -255,7 +267,7 @@ export default {
   data() {
     return {
       showModal: false,
-      value: '',
+      value: "",
       rows: [
         [
           {
@@ -378,6 +390,14 @@ export default {
       }
     },
 
+    /*deleteKey(rowIndex, colIndex) {
+      // Überprüfen Sie, ob die Zeile und die Spalte existieren
+      if (this.rows[rowIndex] && this.rows[rowIndex][colIndex]) {
+        // Löschen Sie die Spalte aus der Zeile
+        this.rows[rowIndex].splice(colIndex);
+      }
+    }, */
+
     test() {
       this.rows[1].doorDesignation = "Dies ist ein Test";
       this.rows[1].quantity = "5";
@@ -407,7 +427,6 @@ export default {
 }
 
 .configurator {
-  
 }
 .checkbox-row {
   display: flex; /* Display rows horizontally */
@@ -454,8 +473,7 @@ export default {
 
 .key-name {
   width: 30px;
-  overflow: hidden; 
-  
+  overflow: hidden;
 }
-/*               ------------------------------------------------------- here  ----------------------- */ 
+/*               ------------------------------------------------------- here  ----------------------- */
 </style>

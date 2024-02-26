@@ -12,7 +12,7 @@ import newMatrix from "./components/newMatrix.vue";
 * {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  font-weight: 500;
+  font-weight: 600;
 }
 h1,
 h2,
