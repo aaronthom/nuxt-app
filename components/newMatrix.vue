@@ -1,13 +1,6 @@
 <!-- Current problems:
 
 
-JSON Parse etc functions dont work for the duplicate Row Method
-
-problems occur with the multiple Select Box -> right now the only solution is to "refresh" the array (row.options)  with an empty array for every row
-
-styling problem with the vertical text and the modal button
-
-not able to initialize a new nuxt project
 
 21/2/ 24 
 
@@ -187,7 +180,7 @@ not able to initialize a new nuxt project
             color="blue"
           />
           <UButton
-            @click="removeCheckbox()"
+            @click="deleteCheckbox(colIndex)"
             v-show="rowIndex == this.rows.length - 1"
             icon="i-heroicons-trash"
             size="sm"
@@ -350,6 +343,23 @@ export default {
       });
     },
 
+    deleteCheckbox(colIndex) {
+      this.rows.forEach((row) => {
+        if (row.length > 1) {
+          row.splice(colIndex, 1); // Remove the last checkbox from each row if more than one exists
+        }
+      });
+    },
+
+    deleteRow(rowIndex) {
+      if (rowIndex > 0) {
+        this.rows.splice(rowIndex, 1); // Entferne die Zeile an der gegebenen Indexposition
+      } // Entferne die Zeile an der gegebenen Indexposition
+      else {
+        alert("Hier ist Schluss!");
+      }
+    },
+
     duplicateRowLightCopy(rowIndex) {
       //this function is used to duplicate a row with a light copy -> we need a deep copy of the row
       const newRow = Object.assign({}, this.rows[rowIndex]);
@@ -383,15 +393,6 @@ export default {
       }
 
       return copy; // Rückgabe der tiefen Kopie des Objekts
-    },
-
-    deleteRow(rowIndex) {
-      if (rowIndex > 0) {
-        this.rows.splice(rowIndex, 1); // Entferne die Zeile an der gegebenen Indexposition
-      } // Entferne die Zeile an der gegebenen Indexposition
-      else {
-        alert("Hier ist Schluss!");
-      }
     },
 
     deleteKey(rowIndex, colIndex) {
