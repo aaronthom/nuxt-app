@@ -186,8 +186,9 @@ not able to initialize a new nuxt project
             v-model="checkbox.checked"
             color="blue"
           />
-          <UButton 
-            @click="deleteKey(rowIndex, colIndex)"
+          <UButton
+            @click="removeCheckbox()"
+            v-show="rowIndex == this.rows.length - 1"
             icon="i-heroicons-trash"
             size="sm"
             color="red"
@@ -195,7 +196,10 @@ not able to initialize a new nuxt project
             :trailing="false"
             style="
              
-              /* Passen Sie den Abstand nach Bedarf an */
+             writing-mode: vertical-rl;
+              position: absolute;
+              margin-top: 5em;
+              margin-left: ;/
             "
           />
         </div>
@@ -391,13 +395,13 @@ export default {
     },
 
     deleteKey(rowIndex, colIndex) {
-    // Überprüfen Sie, ob die Zeile existiert
-    if (this.rows[rowIndex]) {
-      // Entfernen Sie die Spalte aus der Zeile
-      // Da Sie die gesamte Spalte löschen möchten, verwenden Sie splice auf der Zeile
-      this.rows[rowIndex].splice(colIndex, 1);
-    }
-  },
+      // Überprüfen Sie, ob die Zeile existiert
+      if (this.rows[rowIndex]) {
+        // Entfernen Sie die Spalte aus der Zeile
+        // Da Sie die gesamte Spalte löschen möchten, verwenden Sie splice auf der Zeile
+        this.rows[rowIndex].splice(colIndex, 1);
+      }
+    },
 
     test() {
       this.rows[1].doorDesignation = "Dies ist ein Test";
@@ -427,8 +431,6 @@ export default {
   margin: 250px 0px 0px 30px;
 }
 
-.configurator {
-}
 .checkbox-row {
   display: flex; /* Display rows horizontally */
   margin-bottom: 10px; /* Spacing between rows */
