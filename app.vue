@@ -4,11 +4,11 @@ import Matrix from "./components/Matrix.vue";
 import newMatrix from "./components/newMatrix.vue";
 </script>
 <template>
-  <!--      <Matrix></Matrix>  -->
-  <NewMatrix></NewMatrix>
+  <!--    <Configurator/>  <Matrix></Matrix>  -->
+  <NewMatrix></NewMatrix> 
 </template>
 
-<style>
+<style lang="scss">
 * {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
