@@ -135,7 +135,7 @@
           <UButton
             icon="i-heroicons-trash"
             size="sm"
-            color="sky"
+            color="red"
             variant="solid"
             :trailing="false"
             @click="deleteRow(rowIndex)"
@@ -191,7 +191,7 @@
              
              writing-mode: vertical-rl;
               position: absolute;
-              margin-top: 5em;
+              margin-top: 6.4em;
               margin-left: ;/
             "
           />
