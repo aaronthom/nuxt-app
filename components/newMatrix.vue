@@ -1,8 +1,10 @@
 <!-- Current problems:
 
+  the modal which contains the input for the key name only exists once -> so if i change value in the modal, all columns change their name
 
+  i need to create a new modal for every key (column ) that gets created -> with an individual value so i can change every columns name 
 
-21/2/ 24 
+  -> that also means that the showModal button of every column needs to show the right modal which contains the input for the key name of this exact column.
 
 
 
@@ -156,10 +158,10 @@
               margin-left: ;
             "
           >
-            {{ value }}
+            {{ row.value }} hh
           </h3>
           <UButton
-            @click="toggleModal(rowIndex, colIndex, checkbox)"
+            @click="toggleModal(colIndex)"
             icon="i-heroicons-pencil"
             v-show="rowIndex < 1"
             size="sm"
@@ -170,7 +172,6 @@
               writing-mode: vertical-rl;
               position: absolute;
               margin-top: -4em;
-              margin-left: ;
             "
           />
           <p v-show="rowIndex < 1">&nbsp;</p>
@@ -188,11 +189,10 @@
             variant="solid"
             :trailing="false"
             style="
-             
-             writing-mode: vertical-rl;
+              writing-mode: vertical-rl;
               position: absolute;
               margin-top: 6.4em;
-              margin-left: ;/
+              margin-left: ;
             "
           />
         </div>
@@ -224,7 +224,7 @@
           :trailing="false"
           >Schlüssel -</UButton
         >
-        <UButton
+        --><UButton
           class="test-button"
           @click="test"
           size="sm"
@@ -232,7 +232,7 @@
           variant="solid"
           :trailing="false"
           >Test</UButton
-        > -->
+        >
       </div>
     </div>
     <UButton
@@ -245,10 +245,10 @@
       :trailing="false"
       >Schlüssel hinzufügen</UButton
     >
-    <UModal v-model="showModal">
+    <!-- Dynamisches Modal für jede Spalte -->
+    <UModal v-model="showModal[colIndex]" :id="`modal-${colIndex}`">
       <div class="p-4">
-        <Placeholder class="h-48" />
-        <UInput v-model="value" />
+        <UInput v-model="value[colIndex]" />
       </div>
     </UModal>
   </div>
@@ -263,8 +263,7 @@ import { ref } from "vue";
 export default {
   data() {
     return {
-      showModal: false,
-      value: "",
+      showModal: {}, // Objekt für den Anzeigestatus jedes Modals
       rows: [
         [
           {
@@ -274,8 +273,9 @@ export default {
             type: "",
             outside: "",
             inside: "",
-            options: ref([]), //doenst work with ref neither
+            options: ref([]),
             checked: false,
+            value: ""
           },
         ],
       ],
@@ -301,12 +301,19 @@ export default {
     };
   },
   methods: {
+    mounted() {
+      row.forEach((colIndex) => {
+        this.showModal[colIndex] = false;
+        this.value[colIndex] = "";
+      });
+    },
+
     resetOptions(rowIndex) {
       this.rows[rowIndex].options = [];
     },
 
-    toggleModal() {
-      this.showModal = !this.showModal;
+    toggleModal(colIndex) {
+      this.showModal[colIndex], !this.showModal[colIndex];
     },
 
     addRow() {
@@ -405,7 +412,7 @@ export default {
     },
 
     test() {
-      this.rows[1].doorDesignation = "Dies ist ein Test";
+      this.rows[0].value = "Dies ist ein Test";
       this.rows[1].quantity = "5";
       this.rows[1].type = "Doppelzylinder";
       this.rows[1].inside = "35";
