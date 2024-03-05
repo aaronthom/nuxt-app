@@ -2,10 +2,11 @@
 import Configurator from "./components/Configurator.vue";
 import Matrix from "./components/Matrix.vue";
 import newMatrix from "./components/newMatrix.vue";
+import CleanConfigurator from "./components/CleanConfigurator.vue";
 </script>
 <template>
-  <!--    <Configurator/>  <Matrix></Matrix>  -->
-  <NewMatrix></NewMatrix> 
+  <!--    <Configurator/>  <Matrix></Matrix>  <NewMatrix></NewMatrix>  -->
+  <CleanConfigurator></CleanConfigurator>
 </template>
 
 <style lang="scss">
