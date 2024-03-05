@@ -91,7 +91,7 @@
               position: absolute;
               margin-top: -14em;
             ">
-            {{ row.keyname }} {{ colIndex + 1}}
+            {{ row.keyquantity }} {{ colIndex + 1}}
           </h3>
 
           <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" size="sm" color="sky" variant="solid"
@@ -251,7 +251,7 @@ export default {
       this.rows[0].keyname = "Schlüssel";
       this.rows[0].doorDesignation = "TürTest";
       this.rows[1].quantity = "5";
-
+      this.rows[0][1].keyquantity = "6"
       this.rows[1].type = "Doppelzylinder";
       this.rows[1].inside = "35";
       this.rows[1].outside = "35";
