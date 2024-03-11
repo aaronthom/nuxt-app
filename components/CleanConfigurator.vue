@@ -14,7 +14,7 @@
       <div class="checkbox-row" v-for="(row, rowIndex) in rows" :key="rowIndex">
         <div class="position">
           <h3 v-show="rowIndex < 1">Pos.</h3>
-          <UBadge v-model="row.position" color="blue" size="lg" variant="solid" style="
+          <UBadge v-model="row.position" color="sky" size="lg" variant="solid" style="
               width: 30px;
               display: flex;
               justify-content: center;
@@ -77,7 +77,7 @@
         </div>
         <div class="duplicate">
           <br v-show="rowIndex < 1" />
-          <UButton icon="i-heroicons-document-duplicate" size="sm" color="gray" variant="solid" :trailing="false"
+          <UButton icon="i-heroicons-document-duplicate" size="sm" color="sky" variant="outline" :trailing="false"
             @click="duplicateRow(rowIndex)" />
         </div>
         <div class="delete">
@@ -94,7 +94,7 @@
             Schlüssel {{ colIndex + 1 }}
           </h3>
 
-          <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" size="sm" color="blue" variant="solid"
+          <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" size="sm" color="sky" variant="solid"
             :trailing="false" style="
               writing-mode: vertical-rl;
               position: absolute;
@@ -110,7 +110,7 @@
               margin-top: 5.5em;
             " />
           <UButton @click="duplicateCol(colIndex)" v-show="rowIndex == this.rows.length - 1"
-            icon="i-heroicons-document-duplicate" size="sm" color="gray" variant="solid" :trailing="false" style="
+            icon="i-heroicons-document-duplicate" size="sm" color="sky" variant="outline" :trailing="false" style="
               writing-mode: vertical-rl;
               position: absolute;
               margin-top: 11.4em;
@@ -119,13 +119,13 @@
         </div>
       </div>
       <div class="buttons">
-        <UButton class="add-door-button" icon="i-heroicons-plus-16-solid" @click="addRow" size="sm" color="orange"
+        <UButton class="add-door-button" icon="i-heroicons-plus-16-solid" @click="addRow" size="sm" color="amber"
           variant="solid" :trailing="false">Tür hinzufügen</UButton>
-        <UButton class="test-button" @click="test" size="sm" color="orange" variant="solid" :trailing="false">Test
+        <UButton class="test-button" @click="test" size="sm" color="amber" variant="solid" :trailing="false">Test
         </UButton>
       </div>
     </div>
-    <UButton class="add-key-button" icon="i-heroicons-plus-16-solid" @click="addCheckbox" size="sm" color="orange"
+    <UButton class="add-key-button" icon="i-heroicons-plus-16-solid" @click="addCheckbox" size="sm" color="amber"
       variant="solid" :trailing="false">Schlüssel hinzufügen</UButton>
   </div>
 </template>
