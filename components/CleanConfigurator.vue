@@ -70,7 +70,7 @@
             <UBadge color="grey" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
           </div>
         </div>
-        <div class="options" >
+        <div class="options">
           <h3 v-show="rowIndex < 1">N&G-Funktion</h3>
           <USelectMenu v-model="row.options" :options="cylinderOptions" color="grey" placeholder="Optionen auswählen"
             @click="resetOptions(rowIndex)" style="width: 200px" />
@@ -91,15 +91,17 @@
               position: absolute;
               margin-top: -14.8em;
             ">
-            Schlüssel {{ colIndex + 1 }}
+              {{ this.rows.columnName}} 
           </h3>
 
-          <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" size="sm" color="sky" variant="solid"
-            :trailing="false" style="
+          <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" @click="openModal(colIndex)" size="sm" color="sky"
+            variant="solid" :trailing="false" style="
               writing-mode: vertical-rl;
               position: absolute;
               margin-top: -4.4em;
             " />
+          <ColumnModal :columnId="colIndex" v-model="modalStates[colIndex]"
+            @update-column-name="updateColumnName(colIndex, $event)" />
           <p v-show="rowIndex < 1">&nbsp;</p>
           <UCheckbox name="{{ rowIndex * 100 + colIndex + 1 }}" v-model="checkbox.checked" color="blue" />
           <p v-if="this.rows.length - 1 < 1">&nbsp;</p>
@@ -132,12 +134,18 @@
 
 <script>
 import { ref } from "vue";
+import ColumnModal from './ColumnModal.vue';
 
-const isOpen = ref(false);
 
 export default {
+  components: {
+    ColumnModal,
+  },
   data() {
     return {
+
+      modalStates: {},
+
       rows: [
         [
           {
@@ -170,6 +178,15 @@ export default {
   methods: {
     resetOptions(rowIndex) {
       this.rows[rowIndex].options = [];
+    },
+
+    openModal(colIndex) {
+      this.modalStates[colIndex] = true;
+    },
+
+    updateColumnName(colIndex, newName) {
+      // Hier können Sie den neuen Namen der Spalte speichern
+      this.rows[0][colIndex].keyname = newName;
     },
 
     addRow() {
@@ -324,6 +341,4 @@ export default {
   width: 30px;
   overflow: hidden;
 }
-
-
 </style>
