@@ -89,7 +89,7 @@
           <h3 class="key-name" v-show="rowIndex < 1" style="
               writing-mode: vertical-rl;
               position: absolute;
-              margin-top: -14em;
+              margin-top: -15em;
             ">
             Schlüssel {{ colIndex + 1 }}
           </h3>
@@ -98,21 +98,22 @@
             :trailing="false" style="
               writing-mode: vertical-rl;
               position: absolute;
-              margin-top: -4em;
+              margin-top: -4.6em;
             " />
           <p v-show="rowIndex < 1">&nbsp;</p>
           <UCheckbox name="{{ rowIndex * 100 + colIndex + 1 }}" v-model="checkbox.checked" color="blue" />
+          <p v-if="this.rows.length - 1 < 1">&nbsp;</p>
           <UButton @click="deleteCheckbox(colIndex)" v-show="rowIndex == this.rows.length - 1" icon="i-heroicons-trash"
             size="sm" color="red" variant="solid" :trailing="false" style="
               writing-mode: vertical-rl;
               position: absolute;
-              margin-top: 6.4em;
+              margin-top: 5.7em;
             " />
           <UButton @click="duplicateCol(colIndex)" v-show="rowIndex == this.rows.length - 1"
             icon="i-heroicons-document-duplicate" size="sm" color="sky" variant="solid" :trailing="false" style="
               writing-mode: vertical-rl;
               position: absolute;
-              margin-top: 12em;
+              margin-top: 11.4em;
             " />
 
         </div>
@@ -282,6 +283,7 @@ export default {
   align-items: center;
   margin-right: 10px;
   /* Spacing between checkboxes */
+  padding-bottom: -10px;
 }
 
 .buttons,
