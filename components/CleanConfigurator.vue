@@ -53,7 +53,7 @@
         <div class="sizes-halfcylinder" v-else-if="row.type == 'Halbzylinder'">
           <div class="outside">
             <h3 v-show="rowIndex < 1">Außen</h3>
-            <UBadge color="grey" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
+            <UBadge color="grey" variant="outline" size="lg" style="width: 70px">&nbsp;10&nbsp;</UBadge>
           </div>
           <div class="inside">
             <h3 v-show="rowIndex < 1">Innen</h3>
@@ -91,7 +91,7 @@
               position: absolute;
               margin-top: -14em;
             ">
-            {{ row.keyquantity }} {{ colIndex + 1}}
+            Schlüssel {{ colIndex + 1 }}
           </h3>
 
           <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" size="sm" color="sky" variant="solid"
@@ -108,6 +108,13 @@
               position: absolute;
               margin-top: 6.4em;
             " />
+          <UButton @click="duplicateCol(colIndex)" v-show="rowIndex == this.rows.length - 1" icon="i-heroicons-document-duplicate"
+            size="sm" color="sky" variant="solid" :trailing="false" style="
+              writing-mode: vertical-rl;
+              position: absolute;
+              margin-top: 12em;
+            " />
+
         </div>
       </div>
       <div class="buttons">
@@ -221,6 +228,7 @@ export default {
       this.rows.splice(rowIndex + 1, 0, newRow); // Füge die neue Zeile nach der aktuellen Zeile ein
     },
 
+
     // Funktion zum Erstellen einer tiefen Kopie eines Objekts
     deepCopy(obj) {
       if (typeof obj !== "object" || obj === null) {
@@ -246,6 +254,20 @@ export default {
         this.rows[rowIndex].splice(colIndex, 1);
       }
     },
+
+    duplicateCol(colIndex) {
+      // Iteriere über alle Zeilen
+      this.rows.forEach((row, rowIndex) => {
+        // Überprüfe, ob die Spalte existiert
+        if (row[colIndex]) {
+          // Erstelle eine tiefe Kopie der Spalte
+          const newCol = this.deepCopy(row[colIndex]);
+          // Füge die duplizierte Spalte in die entsprechende Position ein
+          row.splice(colIndex + 1, 0, newCol);
+        }
+      });
+    },
+
 
     test() {
       this.rows[0].keyname = "Schlüssel";
