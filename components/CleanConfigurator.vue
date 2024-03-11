@@ -108,8 +108,8 @@
               position: absolute;
               margin-top: 6.4em;
             " />
-          <UButton @click="duplicateCol(colIndex)" v-show="rowIndex == this.rows.length - 1" icon="i-heroicons-document-duplicate"
-            size="sm" color="sky" variant="solid" :trailing="false" style="
+          <UButton @click="duplicateCol(colIndex)" v-show="rowIndex == this.rows.length - 1"
+            icon="i-heroicons-document-duplicate" size="sm" color="sky" variant="solid" :trailing="false" style="
               writing-mode: vertical-rl;
               position: absolute;
               margin-top: 12em;
@@ -187,23 +187,6 @@ export default {
       });
     },
 
-    removeRow() {
-      const lastRowIndex = this.rows.length - 1; // Index der letzten Zeile
-      if (lastRowIndex == this.rows.length - 1 && this.rows.length == 0) {
-        // Stellen Sie sicher, dass mindestens eine Zeile vorhanden ist
-        this.rows.splice(lastRowIndex, 1); // Entfernen Sie die letzte Zeile
-      } else {
-        alert("Hier ist Schluss!");
-      }
-    },
-
-    removeCheckbox() {
-      this.rows.forEach((row) => {
-        if (row.length > 1) {
-          row.pop(); // Remove the last checkbox from each row if more than one exists
-        }
-      });
-    },
 
     deleteCheckbox(colIndex) {
       this.rows.forEach((row) => {
@@ -228,6 +211,18 @@ export default {
       this.rows.splice(rowIndex + 1, 0, newRow); // Füge die neue Zeile nach der aktuellen Zeile ein
     },
 
+    duplicateCol(colIndex) {
+      // Iteriere über alle Zeilen
+      this.rows.forEach((row, rowIndex) => {
+        // Überprüfe, ob die Spalte existiert
+        if (row[colIndex]) {
+          // Erstelle eine tiefe Kopie der Spalte
+          const newCol = this.deepCopy(row[colIndex]);
+          // Füge die duplizierte Spalte in die entsprechende Position ein
+          row.splice(colIndex + 1, 0, newCol);
+        }
+      });
+    },
 
     // Funktion zum Erstellen einer tiefen Kopie eines Objekts
     deepCopy(obj) {
@@ -245,29 +240,6 @@ export default {
 
       return copy; // Rückgabe der tiefen Kopie des Objekts
     },
-
-    deleteKey(rowIndex, colIndex) {
-      // Überprüfen Sie, ob die Zeile existiert
-      if (this.rows[rowIndex]) {
-        // Entfernen Sie die Spalte aus der Zeile
-        // Da Sie die gesamte Spalte löschen möchten, verwenden Sie splice auf der Zeile
-        this.rows[rowIndex].splice(colIndex, 1);
-      }
-    },
-
-    duplicateCol(colIndex) {
-      // Iteriere über alle Zeilen
-      this.rows.forEach((row, rowIndex) => {
-        // Überprüfe, ob die Spalte existiert
-        if (row[colIndex]) {
-          // Erstelle eine tiefe Kopie der Spalte
-          const newCol = this.deepCopy(row[colIndex]);
-          // Füge die duplizierte Spalte in die entsprechende Position ein
-          row.splice(colIndex + 1, 0, newCol);
-        }
-      });
-    },
-
 
     test() {
       this.rows[0].keyname = "Schlüssel";
