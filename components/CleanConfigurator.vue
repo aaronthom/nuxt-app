@@ -93,13 +93,19 @@
           <input type="text" placeholder="Schlüsselname" readonly class="key-name" v-model="checkbox.keyname" v-show="rowIndex < 1" style="
               writing-mode: vertical-rl;
               position: absolute;
-              margin-top: -16.8em;
-              height: 140px;
+              margin-top: -19.8em;
+              height: 130px;
               cursor: default;
-            ">
+            "> 
               
-        </input>
-
+        </input> 
+        <input type="number" placeholder="1" v-model="checkbox.keyquantity"  v-show="rowIndex < 1" style="
+              
+              position: absolute;
+              margin-top: -10.8em;
+              width: 33px;
+              height: 20px;
+              font-size: 14px;"> {{ row.quantity }} </input>
           <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" @click="openModal(colIndex)" size="sm" color="sky"
             variant="solid" :trailing="false" style="
               writing-mode: vertical-rl;
@@ -269,7 +275,7 @@ export default {
       this.rows[0][1].keyname = "Schlüssel 1";
       this.rows[0].doorDesignation = "TürTest";
       this.rows[2].doorDesignation = "TürTest 22";
-      this.rows[1].quantity = "5";
+      this.rows[0][1].quantity = "5";
       this.rows[0][1].keyquantity = "6"
       this.rows[1].type = "Doppelzylinder";
       this.rows[1].inside = "35";
