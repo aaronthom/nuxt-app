@@ -1,6 +1,6 @@
 <template>
     <UModal class="modal" v-model="isOpen">
-        <UInput v-model="columnName" color="sky" placeholder="Spaltenname" />
+        <UInput v-model="columnName" color="sky" placeholder="Schlüsselbezeichnung" />
         <UButton @click="closeModal" color="sky">Speichern</UButton>
     </UModal>
 </template>
