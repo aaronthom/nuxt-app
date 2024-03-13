@@ -91,7 +91,7 @@
               position: absolute;
               margin-top: -14.8em;
             ">
-              {{ this.rows.columnName}} 
+              {{ row.keyname}} 
           </h3>
 
           <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" @click="openModal(colIndex)" size="sm" color="sky"

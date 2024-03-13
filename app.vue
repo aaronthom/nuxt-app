@@ -6,7 +6,7 @@ import CleanConfigurator from "./components/CleanConfigurator.vue";
 </script>
 <template>
   <!--    <Configurator/>  <Matrix></Matrix>  <NewMatrix></NewMatrix>  -->
-  <CleanConfigurator></CleanConfigurator>
+  <CleanConfigurator></CleanConfigurator>!
 </template>
 
 <style lang="scss">
