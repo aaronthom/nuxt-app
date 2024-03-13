@@ -4,9 +4,6 @@
 export default defineNuxtConfig({
   modules: ['@nuxt/ui'],
   devtools: { enabled: true },
-  plugins: [
-    '~/plugins/global-methods.js'
-  ],
   runtimeConfig: {
     MAILHOST: process.env.MAILHOST,
     MAILPORT: process.env.MAILPORT,

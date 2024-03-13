@@ -25,17 +25,17 @@
         </div>
         <div class="door-designation">
           <h3 v-show="rowIndex < 1">Türbezeichnung</h3>
-          <UInput v-model="row.doorDesignation" color="grey" size="sm" variant="outline" placeholder="z.B. Haupteingang"
+          <UInput v-model="row.doorDesignation" color="gray" size="sm" variant="outline" placeholder="z.B. Haupteingang"
             style="width: 200px" />
         </div>
         <div class="quantity">
           <h3 v-show="rowIndex < 1">Anzahl</h3>
-          <UInput v-model="row.quantity" class="quantity-input" color="grey" size="sm" type="number" variant="outline"
+          <UInput v-model="row.quantity" class="quantity-input" color="gray" size="sm" type="number" variant="outline"
             style="width: 70px" />
         </div>
         <div class="cylinder-type">
           <h3 v-show="rowIndex < 1">Zylinder-Typ</h3>
-          <USelectMenu v-model="row.type" color="grey" :options="cylinderType" placeholder="Zylinder wählen..."
+          <USelectMenu v-model="row.type" color="gray" :options="cylinderType" placeholder="Zylinder wählen..."
             style="width: 200px" />
         </div>
         <div class="sizes" v-if="row.type == 'Doppelzylinder' ||
@@ -43,36 +43,36 @@
         ">
           <div class="outside">
             <h3 v-show="rowIndex < 1">Außen</h3>
-            <USelectMenu v-model="row.outside" color="grey" :options="sizes" placeholder="..." style="width: 70px" />
+            <USelectMenu v-model="row.outside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
           </div>
           <div class="inside">
             <h3 v-show="rowIndex < 1">Innen</h3>
-            <USelectMenu v-model="row.inside" color="grey" :options="sizes" placeholder="..." style="width: 70px" />
+            <USelectMenu v-model="row.inside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
           </div>
         </div>
         <div class="sizes-halfcylinder" v-else-if="row.type == 'Halbzylinder'">
           <div class="outside">
             <h3 v-show="rowIndex < 1">Außen</h3>
-            <UBadge color="grey" variant="outline" size="lg" style="width: 70px">&nbsp;10&nbsp;</UBadge>
+            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;10&nbsp;</UBadge>
           </div>
           <div class="inside">
             <h3 v-show="rowIndex < 1">Innen</h3>
-            <USelectMenu v-model="row.inside" color="grey" :options="sizes" placeholder="..." style="width: 70px" />
+            <USelectMenu v-model="row.inside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
           </div>
         </div>
         <div class="sizes-empty" v-else>
           <div class="outside">
             <h3 v-show="rowIndex < 1">Außen</h3>
-            <UBadge color="grey" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
+            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
           </div>
           <div class="inside">
             <h3 v-show="rowIndex < 1">Innen</h3>
-            <UBadge color="grey" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
+            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
           </div>
         </div>
         <div class="options">
           <h3 v-show="rowIndex < 1">N&G-Funktion</h3>
-          <USelectMenu v-model="row.options" :options="cylinderOptions" color="grey" placeholder="Optionen auswählen"
+          <USelectMenu v-model="row.options" :options="cylinderOptions" color="gray" placeholder="Optionen auswählen"
             @click="resetOptions(rowIndex)" style="width: 200px" />
         </div>
         <div class="duplicate">
