@@ -86,13 +86,15 @@
             @click="deleteRow(rowIndex)" />
         </div>
         <div class="checkbox-item" v-for="(checkbox, colIndex) in row" :key="colIndex">
-          <h3 class="key-name" v-show="rowIndex < 1" style="
+          <input type="text" readonly class="key-name" v-model="checkbox.keyname" v-show="rowIndex < 1" style="
               writing-mode: vertical-rl;
               position: absolute;
-              margin-top: -14.8em;
+              margin-top: -16.8em;
+              height: 140px;
+              cursor: default;
             ">
-              {{ row.keyname}} 
-          </h3>
+              
+        </input>
 
           <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" @click="openModal(colIndex)" size="sm" color="sky"
             variant="solid" :trailing="false" style="
@@ -260,8 +262,9 @@ export default {
     },
 
     test() {
-      this.rows[0].keyname = "Schlüssel";
+      this.rows[0][1].keyname = "Schlüssel 1";
       this.rows[0].doorDesignation = "TürTest";
+      this.rows[2].doorDesignation = "TürTest 22";
       this.rows[1].quantity = "5";
       this.rows[0][1].keyquantity = "6"
       this.rows[1].type = "Doppelzylinder";
