@@ -93,9 +93,12 @@
           <input type="text" placeholder="Schlüsselname" readonly class="key-name" v-model="checkbox.keyname" v-show="rowIndex < 1" style="
               writing-mode: vertical-rl;
               position: absolute;
-              margin-top: -19.8em;
-              height: 130px;
+              margin-top: -21.8em;
+              height: 150px;
               cursor: default;
+              border: 1px solid lightgray;
+              border-radius: 8px;
+              padding: 20px 0 20px 0;
             "> 
               
         </input> 
@@ -105,7 +108,10 @@
               margin-top: -10.8em;
               width: 33px;
               height: 20px;
-              font-size: 14px;"> {{ row.quantity }} </input>
+              font-size: 14px;
+              border: 1px dotted lightblue;
+              border-radius: 4px;
+              padding: 10px 0 10px 0;"> {{ row.quantity }} </input>
           <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" @click="openModal(colIndex)" size="sm" color="sky"
             variant="solid" :trailing="false" style="
               writing-mode: vertical-rl;
