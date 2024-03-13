@@ -39,7 +39,7 @@
             style="width: 200px" />
         </div>
         <div class="sizes" v-if="row.type == 'Doppelzylinder' ||
-        row.type == 'Knaufzylinder (Knauf außen)'
+        row.type == 'Knaufzylinder (innen)'
         ">
           <div class="outside">
             <h3 v-show="rowIndex < 1">Außen</h3>
@@ -53,11 +53,11 @@
         <div class="sizes-halfcylinder" v-else-if="row.type == 'Halbzylinder'">
           <div class="outside">
             <h3 v-show="rowIndex < 1">Außen</h3>
-            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;10&nbsp;</UBadge>
+            <USelectMenu v-model="row.outside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
           </div>
           <div class="inside">
             <h3 v-show="rowIndex < 1">Innen</h3>
-            <USelectMenu v-model="row.inside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
+            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;10&nbsp;</UBadge>
           </div>
         </div>
         <div class="sizes-empty" v-else>
@@ -70,10 +70,14 @@
             <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
           </div>
         </div>
-        <div class="options">
+        <div class="options"  v-if="row.type == 'Doppelzylinder'"  >
           <h3 v-show="rowIndex < 1">N&G-Funktion</h3>
           <USelectMenu v-model="row.options" :options="cylinderOptions" color="gray" placeholder="Optionen auswählen"
             @click="resetOptions(rowIndex)" style="width: 200px" />
+        </div>
+        <div class="options-empty"  v-else  >
+          <h3 v-show="rowIndex < 1">N&G-Funktion</h3>
+          <UBadge color="gray" variant="outline" size="lg" style="width: 200px">&nbsp;N/A&nbsp;</UBadge>
         </div>
         <div class="duplicate">
           <br v-show="rowIndex < 1" />
@@ -86,7 +90,7 @@
             @click="deleteRow(rowIndex)" />
         </div>
         <div class="checkbox-item" v-for="(checkbox, colIndex) in row" :key="colIndex">
-          <input type="text" readonly class="key-name" v-model="checkbox.keyname" v-show="rowIndex < 1" style="
+          <input type="text" placeholder="Schlüsselname" readonly class="key-name" v-model="checkbox.keyname" v-show="rowIndex < 1" style="
               writing-mode: vertical-rl;
               position: absolute;
               margin-top: -16.8em;
@@ -166,7 +170,7 @@ export default {
       ],
       cylinderType: [
         "Doppelzylinder",
-        "Knaufzylinder (Knauf außen)",
+        "Knaufzylinder (innen)",
         "Halbzylinder",
         "Vorhangschloss 50mm",
         "Vorhangschloss 80mm",
