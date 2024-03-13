@@ -30,7 +30,7 @@
         </div>
         <div class="quantity">
           <h3 v-show="rowIndex < 1">Anzahl</h3>
-          <UInput v-model="row.quantity" class="quantity-input" color="gray" size="sm" type="number" variant="outline"
+          <UInput v-model="row.doorquantity" class="quantity-input" color="gray" size="sm" type="number" variant="outline"
             style="width: 70px" />
         </div>
         <div class="cylinder-type">
@@ -93,7 +93,7 @@
           <input type="text" placeholder="Schlüsselname" readonly class="key-name" v-model="checkbox.keyname" v-show="rowIndex < 1" style="
               writing-mode: vertical-rl;
               position: absolute;
-              margin-top: -21.8em;
+              margin-top: -20.8em;
               height: 150px;
               cursor: default;
               border: 1px solid lightgray;
@@ -102,13 +102,13 @@
             "> 
               
         </input> 
-        <input type="number" placeholder="1" v-model="checkbox.keyquantity"  v-show="rowIndex < 1" style="
+        <input min="1" type="number" placeholder="1" v-model="checkbox.keyquantity"  v-show="rowIndex < 1" style="
               
               position: absolute;
-              margin-top: -10.8em;
+              margin-top: -11.8em;
               width: 33px;
               height: 20px;
-              font-size: 14px;
+              font-size: 12px;
               border: 1px dotted lightblue;
               border-radius: 4px;
               padding: 10px 0 10px 0;"> {{ row.quantity }} </input>
