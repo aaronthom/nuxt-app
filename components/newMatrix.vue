@@ -1,17 +1,10 @@
 <!-- Current problems:
 
+  the modal which contains the input for the key name only exists once -> so if i change value in the modal, all columns change their name
 
-JSON Parse etc functions dont work for the duplicate Row Method
+  i need to create a new modal for every key (column ) that gets created -> with an individual value so i can change every columns name 
 
-problems occur with the multiple Select Box -> right now the only solution is to "refresh" the array (row.options)  with an empty array for every row
-
-styling problem with the vertical text and the modal button
-
-not able to initialize a new nuxt project
-
-21/2/ 24 
-
-
+  -> that also means that the showModal button of every column needs to show the right modal which contains the input for the key name of this exact column.
 
 -->
 
@@ -74,8 +67,7 @@ not able to initialize a new nuxt project
           class="sizes"
           v-if="
             row.type == 'Doppelzylinder' ||
-            row.type == 'Knaufzylinder (Knauf außen)' ||
-            row.type == 'Halbzylinder'
+            row.type == 'Knaufzylinder (Knauf außen)'
           "
         >
           <div class="outside">
@@ -87,6 +79,24 @@ not able to initialize a new nuxt project
               placeholder="..."
               style="width: 70px"
             />
+          </div>
+          <div class="inside">
+            <h3 v-show="rowIndex < 1">Innen</h3>
+            <USelectMenu
+              v-model="row.inside"
+              color="grey"
+              :options="sizes"
+              placeholder="..."
+              style="width: 70px"
+            />
+          </div>
+        </div>
+        <div class="sizes-halfcylinder" v-else-if="row.type == 'Halbzylinder'">
+          <div class="outside">
+            <h3 v-show="rowIndex < 1">Außen</h3>
+            <UBadge color="grey" variant="outline" size="lg" style="width: 70px"
+              >&nbsp;N/A&nbsp;</UBadge
+            >
           </div>
           <div class="inside">
             <h3 v-show="rowIndex < 1">Innen</h3>
@@ -114,18 +124,19 @@ not able to initialize a new nuxt project
           </div>
         </div>
         <div class="options">
-          <h3 v-show="rowIndex < 1">Optionen</h3>
+          <h3 v-show="rowIndex < 1">N&G-Funktion</h3>
           <USelectMenu
             v-model="row.options"
             :options="cylinderOptions"
-            multiple
-            @click="resetOptions(rowIndex)"
             color="grey"
             placeholder="Optionen auswählen"
+            @click="resetOptions(rowIndex)"
             style="width: 200px"
           />
-          <!--   multiple __________________   ___________________________________________ -->
         </div>
+        <!--<div class="multipleMenu">
+          <USelectMenu multiple @click="resetOptions(rowIndex)"></USelectMenu>
+        </div> -->
         <div class="duplicate">
           <br v-show="rowIndex < 1" />
           <UButton
@@ -142,7 +153,7 @@ not able to initialize a new nuxt project
           <UButton
             icon="i-heroicons-trash"
             size="sm"
-            color="sky"
+            color="red"
             variant="solid"
             :trailing="false"
             @click="deleteRow(rowIndex)"
@@ -154,6 +165,7 @@ not able to initialize a new nuxt project
           :key="colIndex"
         >
           <h3
+            class="key-name"
             v-show="rowIndex < 1"
             style="
               writing-mode: vertical-rl;
@@ -162,8 +174,9 @@ not able to initialize a new nuxt project
               margin-left: ;
             "
           >
-            Schlüssel {{ rowIndex * 100 + colIndex + 1 }}
+            {{ row.keyname }} x {{ row.keyquantity }}
           </h3>
+
           <UButton
             icon="i-heroicons-pencil"
             v-show="rowIndex < 1"
@@ -175,7 +188,6 @@ not able to initialize a new nuxt project
               writing-mode: vertical-rl;
               position: absolute;
               margin-top: -4em;
-              margin-left: ;
             "
           />
           <p v-show="rowIndex < 1">&nbsp;</p>
@@ -184,17 +196,33 @@ not able to initialize a new nuxt project
             v-model="checkbox.checked"
             color="blue"
           />
+          <UButton
+            @click="deleteCheckbox(colIndex)"
+            v-show="rowIndex == this.rows.length - 1"
+            icon="i-heroicons-trash"
+            size="sm"
+            color="red"
+            variant="solid"
+            :trailing="false"
+            style="
+              writing-mode: vertical-rl;
+              position: absolute;
+              margin-top: 6.4em;
+              margin-left: ;
+            "
+          />
         </div>
       </div>
       <div class="buttons">
         <UButton
           class="add-door-button"
+          icon="i-heroicons-plus-16-solid"
           @click="addRow"
           size="sm"
           color="amber"
           variant="solid"
           :trailing="false"
-          >Weitere Tür</UButton
+          >Tür hinzufügen</UButton
         >
         <!--<UButton
           @click="removeRow(rowIndex)"
@@ -203,7 +231,7 @@ not able to initialize a new nuxt project
           variant="solid"
           :trailing="false"
           >Zylinder -</UButton
-        > -->
+        > 
         <UButton
           @click="removeCheckbox"
           size="sm"
@@ -212,7 +240,7 @@ not able to initialize a new nuxt project
           :trailing="false"
           >Schlüssel -</UButton
         >
-        <UButton
+        --><UButton
           class="test-button"
           @click="test"
           size="sm"
@@ -225,13 +253,15 @@ not able to initialize a new nuxt project
     </div>
     <UButton
       class="add-key-button"
+      icon="i-heroicons-plus-16-solid"
       @click="addCheckbox"
       size="sm"
       color="amber"
       variant="solid"
       :trailing="false"
-      >Schlüssel +</UButton
+      >Schlüssel hinzufügen</UButton
     >
+    <!-- Dynamisches Modal für jede Spalte -->
   </div>
 </template>
 
@@ -241,21 +271,24 @@ const initialize = () => {
 };
 import { ref } from "vue";
 
+const isOpen = ref(false);
+
 export default {
   data() {
     return {
-      showModal: false,
       rows: [
         [
           {
             position: 1,
             doorDesignation: "",
-            quantity: "",
+            doorquantity: "",
             type: "",
             outside: "",
             inside: "",
-            options: ref([]), //doenst work with ref neither
+            options: "",
             checked: false,
+            keyname: "",
+            keyquantity: "",
           },
         ],
       ],
@@ -269,21 +302,25 @@ export default {
       ],
       sizes: [30, 35, 40, 45, 50, 55, 60],
       selectedOptions: ref([]),
-      cylinderOptions: [
-        "Not- & Gefahrenfunktion",
-        "Drehknauf",
-        "FZG",
-        "ABH Kl. 1",
-        "ABH Kl. 2",
-        "PSH",
-        "Modular",
-      ],
+      cylinderOptions: ["Not- & Gefahrenfunktion"],
     };
   },
   methods: {
+    mounted() {
+      row.forEach((colIndex) => {
+        this.showModal[colIndex] = false;
+        this.value[colIndex] = "";
+      });
+    },
+
     resetOptions(rowIndex) {
       this.rows[rowIndex].options = [];
     },
+
+    toggleModal(colIndex) {
+      this.showModal[colIndex] = !this.showModal[colIndex];
+    },
+
     addRow() {
       const numCheckboxes = this.rows[0].length; // Get the number of checkboxes in the first row
       const newRow = [];
@@ -302,7 +339,7 @@ export default {
 
     removeRow() {
       const lastRowIndex = this.rows.length - 1; // Index der letzten Zeile
-      if (lastRowIndex > 0) {
+      if (lastRowIndex == this.rows.length - 1 && this.rows.length == 0) {
         // Stellen Sie sicher, dass mindestens eine Zeile vorhanden ist
         this.rows.splice(lastRowIndex, 1); // Entfernen Sie die letzte Zeile
       } else {
@@ -316,6 +353,23 @@ export default {
           row.pop(); // Remove the last checkbox from each row if more than one exists
         }
       });
+    },
+
+    deleteCheckbox(colIndex) {
+      this.rows.forEach((row) => {
+        if (row.length > 1) {
+          row.splice(colIndex, 1); // Remove the last checkbox from each row if more than one exists
+        }
+      });
+    },
+
+    deleteRow(rowIndex) {
+      if (rowIndex > 0) {
+        this.rows.splice(rowIndex, 1); // Entferne die Zeile an der gegebenen Indexposition
+      } // Entferne die Zeile an der gegebenen Indexposition
+      else {
+        alert("Hier ist Schluss!");
+      }
     },
 
     duplicateRowLightCopy(rowIndex) {
@@ -353,27 +407,25 @@ export default {
       return copy; // Rückgabe der tiefen Kopie des Objekts
     },
 
-    deleteRow(rowIndex) {
-      if (rowIndex > 0) {
-        this.rows.splice(rowIndex, 1); // Entferne die Zeile an der gegebenen Indexposition
-      } // Entferne die Zeile an der gegebenen Indexposition
-      else {
-        alert("Hier ist Schluss!");
+    deleteKey(rowIndex, colIndex) {
+      // Überprüfen Sie, ob die Zeile existiert
+      if (this.rows[rowIndex]) {
+        // Entfernen Sie die Spalte aus der Zeile
+        // Da Sie die gesamte Spalte löschen möchten, verwenden Sie splice auf der Zeile
+        this.rows[rowIndex].splice(colIndex, 1);
       }
     },
 
     test() {
-      this.rows[1].doorDesignation = "Dies ist ein Test";
+      this.rows[1].keyquantity = "2";
+      this.rows[0].keyname = "Test";
+      this.rows[0].doorDesignation = "TürTest";
       this.rows[1].quantity = "5";
+
       this.rows[1].type = "Doppelzylinder";
       this.rows[1].inside = "35";
       this.rows[1].outside = "35";
-      this.rows[1].options = [
-        "Not- & Gefahrenfunktion",
-        "Drehknauf",
-        "FZG",
-        "ABH Kl. 1",
-      ];
+      this.rows[1].options = ["Not- & Gefahrenfunktion"];
       this.rows[1][1].checked = true;
       this.rows[1][2].checked = true;
       this.rows[3][2].checked = true;
@@ -387,11 +439,9 @@ export default {
 .flex-container {
   display: flex;
   flex-direction: row;
+  margin: 250px 0px 0px 30px;
 }
 
-.configurator {
-  margin: 310px 0 0 0;
-}
 .checkbox-row {
   display: flex; /* Display rows horizontally */
   margin-bottom: 10px; /* Spacing between rows */
@@ -408,6 +458,7 @@ export default {
 
 .buttons,
 .sizes-empty,
+.sizes-halfcylinder,
 .sizes {
   display: flex; /* Display buttons horizontally */
   justify-content: flex-start; /* Align buttons to the right */
@@ -415,9 +466,11 @@ export default {
 }
 
 .add-door-button {
+  display: flex;
+  justify-content: center;
   font-weight: 600;
   height: 36px;
-  width: 100px;
+  width: 200px;
 }
 
 .test-button {
@@ -425,11 +478,17 @@ export default {
 }
 
 .add-key-button {
-  margin: 294px 0 0 2px;
+  margin: 23px 0 0 2px;
   writing-mode: vertical-rl;
   display: flex;
   justify-content: center; /* Align buttons to the right */
   font-weight: 600;
-  height: 12%;
+  height: 200px;
 }
+
+.key-name {
+  width: 30px;
+  overflow: hidden;
+}
+/*               ------------------------------------------------------- here  ----------------------- */
 </style>
