@@ -30,7 +30,7 @@
         </div>
         <div class="quantity">
           <h3 v-show="rowIndex < 1">Anzahl</h3>
-          <UInput v-model="row.doorquantity" class="quantity-input" color="gray" size="sm" type="number" variant="outline"
+          <UInput v-model="row.doorquantity" min="1" class="quantity-input" color="gray" size="sm" type="number" variant="outline"
             style="width: 70px" />
         </div>
         <div class="cylinder-type">
@@ -102,7 +102,7 @@
             "> 
               
         </input> 
-        <input min="1" type="number" placeholder="1" v-model="checkbox.keyquantity"  v-show="rowIndex < 1" style="
+        <input min="1"  type="number" placeholder="1" v-model="checkbox.keyquantity" v-show="rowIndex < 1" style="
               
               position: absolute;
               margin-top: -11.8em;
@@ -111,7 +111,7 @@
               font-size: 12px;
               border: 1px dotted lightblue;
               border-radius: 4px;
-              padding: 10px 0 10px 0;"> {{ row.quantity }} </input>
+              padding: 10px 0 10px 0;"></input>
           <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" @click="openModal(colIndex)" size="sm" color="sky"
             variant="solid" :trailing="false" style="
               writing-mode: vertical-rl;
@@ -169,14 +169,14 @@ export default {
           {
             position: 1,
             doorDesignation: "",
-            doorquantity: "",
+            doorquantity: 1,
             type: "",
             outside: "",
             inside: "",
             options: "",
             checked: false,
             keyname: "",
-            keyquantity: "",
+            keyquantity: 1,
           },
         ],
       ],
@@ -211,7 +211,7 @@ export default {
       const numCheckboxes = this.rows[0].length; // Get the number of checkboxes in the first row
       const newRow = [];
       for (let i = 0; i < numCheckboxes; i++) {
-        newRow.push({ checked: false }); // Create a new row with the same number of checkboxes as the first row
+        newRow.push({ checked: false, doorquantity: 1}); // Create a new row with the same number of checkboxes as the first row
       }
       this.rows.push(newRow); // Add the new row
       //this.rows[this.rows.length - 1].options = []; // setting the empty array for each option /// very bad solution but no other idea at the moment
@@ -219,7 +219,7 @@ export default {
 
     addCheckbox() {
       this.rows.forEach((row) => {
-        row.push({ checked: false }); // Add one checkbox to each row
+        row.push({ checked: false, keyquantity: 1}); // Add one checkbox to each row
       });
     },
 
@@ -281,7 +281,7 @@ export default {
       this.rows[0][1].keyname = "Schlüssel 1";
       this.rows[0].doorDesignation = "TürTest";
       this.rows[2].doorDesignation = "TürTest 22";
-      this.rows[0][1].quantity = "5";
+      this.rows[1].doorquantity = "5";
       this.rows[0][1].keyquantity = "6"
       this.rows[1].type = "Doppelzylinder";
       this.rows[1].inside = "35";
