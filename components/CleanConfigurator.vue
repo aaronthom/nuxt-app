@@ -9,86 +9,33 @@
 -->
 
 <template>
-  <div class="flex-container">
+  
     <div class="configurator">
-      <div class="checkbox-row" v-for="(row, rowIndex) in rows" :key="rowIndex">
-        <div class="position">
-          <h3 v-show="rowIndex < 1">Pos.</h3>
-          <UBadge v-model="row.position" color="sky" size="lg" variant="solid" style="
-              width: 30px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
+      <div class="checkbox-row" v-for="(row, rowIndex) in rows" :key="rowIndex" >
+        <div class="checkbox-item" v-for="(checkbox, colIndex) in row" :key="colIndex" v-show="colIndex < 1 ">
+         <div class="flex-container"  v-show="colIndex < 1 ">
+
+          
+           <div   v-show="colIndex < 1 ">
+           <h3 v-show="rowIndex < 1 && colIndex < 1 ">        Pos.      </h3>
+           <UBadge v-show="colIndex < 1 " v-model="row.position" color="sky" size="lg" variant="solid" style="
+              
+              
+              
             ">
             {{ rowIndex + 1 }}
           </UBadge>
-        </div>
-        <div class="door-designation">
-          <h3 v-show="rowIndex < 1">Türbezeichnung</h3>
-          <UInput v-model="row.doorDesignation" color="gray" size="sm" variant="outline" placeholder="z.B. Haupteingang"
-            style="width: 200px" />
-        </div>
-        <div class="quantity">
-          <h3 v-show="rowIndex < 1">Anzahl</h3>
-          <UInput v-model="row.doorquantity" min="1" class="quantity-input" color="gray" size="sm" type="number" variant="outline"
-            style="width: 70px" />
-        </div>
-        <div class="cylinder-type">
-          <h3 v-show="rowIndex < 1">Zylinder-Typ</h3>
-          <USelectMenu v-model="row.type" color="gray" :options="cylinderType" placeholder="Zylinder wählen..."
-            style="width: 200px" />
-        </div>
-        <div class="sizes" v-if="row.type == 'Doppelzylinder' ||
-        row.type == 'Knaufzylinder (innen)'
-        ">
-          <div class="outside">
-            <h3 v-show="rowIndex < 1">Außen</h3>
-            <USelectMenu v-model="row.outside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
           </div>
-          <div class="inside">
-            <h3 v-show="rowIndex < 1">Innen</h3>
-            <USelectMenu v-model="row.inside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
+          <div class="door-designation"  v-show="colIndex < 1 ">
+           <h3 v-show="rowIndex < 1 && colIndex < 1 ">Türbezeichnung</h3>
+           <UInput v-show="colIndex < 1 " v-model="row.doorDesignation" color="gray" size="sm" variant="outline" placeholder="z.B. Haupteingang"
+             />
           </div>
-        </div>
-        <div class="sizes-halfcylinder" v-else-if="row.type == 'Halbzylinder'">
-          <div class="outside">
-            <h3 v-show="rowIndex < 1">Außen</h3>
-            <USelectMenu v-model="row.outside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
-          </div>
-          <div class="inside">
-            <h3 v-show="rowIndex < 1">Innen</h3>
-            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;10&nbsp;</UBadge>
-          </div>
-        </div>
-        <div class="sizes-empty" v-else>
-          <div class="outside">
-            <h3 v-show="rowIndex < 1">Außen</h3>
-            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
-          </div>
-          <div class="inside">
-            <h3 v-show="rowIndex < 1">Innen</h3>
-            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
-          </div>
-        </div>
-        <div class="options"  v-if="row.type == 'Doppelzylinder'"  >
-          <h3 v-show="rowIndex < 1">N&G-Funktion</h3>
-          <USelectMenu v-model="row.options" :options="cylinderOptions" color="gray" placeholder="Optionen auswählen"
-            @click="resetOptions(rowIndex)" style="width: 200px" />
-        </div>
-        <div class="options-empty"  v-else  >
-          <h3 v-show="rowIndex < 1">N&G-Funktion</h3>
-          <UBadge color="gray" variant="outline" size="lg" style="width: 200px">&nbsp;N/A&nbsp;</UBadge>
-        </div>
-        <div class="duplicate">
-          <br v-show="rowIndex < 1" />
-          <UButton icon="i-heroicons-document-duplicate" size="sm" color="sky" variant="outline" :trailing="false"
-            @click="duplicateRow(rowIndex)" />
-        </div>
-        <div class="delete">
-          <br v-show="rowIndex < 1" />
-          <UButton icon="i-heroicons-trash" size="sm" color="red" variant="solid" :trailing="false"
-            @click="deleteRow(rowIndex)" />
-        </div>
+       </div>
+
+          
+    </div>
+        
         <div class="checkbox-item" v-for="(checkbox, colIndex) in row" :key="colIndex">
           <input type="text" placeholder="Schlüsselname" readonly class="key-name" v-model="checkbox.keyname" v-show="rowIndex < 1" style="
               writing-mode: vertical-rl;
@@ -98,7 +45,7 @@
               cursor: default;
               border: 1px solid lightgray;
               border-radius: 8px;
-              padding: 20px 0 20px 0;
+              
             "> 
               
         </input> 
@@ -111,7 +58,7 @@
               font-size: 12px;
               border: 1px dotted lightblue;
               border-radius: 4px;
-              padding: 10px 0 10px 0;"></input>
+              "></input>
           <UButton icon="i-heroicons-pencil" v-show="rowIndex < 1" @click="openModal(colIndex)" size="sm" color="sky"
             variant="solid" :trailing="false" style="
               writing-mode: vertical-rl;
@@ -137,7 +84,16 @@
             " />
 
         </div>
+
+
+
       </div>
+
+
+
+      
+
+
       <div class="buttons">
         <UButton class="add-door-button" icon="i-heroicons-plus-16-solid" @click="addRow" size="sm" color="amber"
           variant="solid" :trailing="false">Tür hinzufügen</UButton>
@@ -147,7 +103,7 @@
     </div>
     <UButton class="add-key-button" icon="i-heroicons-plus-16-solid" @click="addCheckbox" size="sm" color="amber"
       variant="solid" :trailing="false">Schlüssel hinzufügen</UButton>
-  </div>
+  
 </template>
 
 <script>
@@ -217,9 +173,12 @@ export default {
       //this.rows[this.rows.length - 1].options = []; // setting the empty array for each option /// very bad solution but no other idea at the moment
     },
 
+    
+
+    
     addCheckbox() {
-      this.rows.forEach((row) => {
-        row.push({ checked: false, keyquantity: 1}); // Add one checkbox to each row
+      this.rows.forEach((checkbox) => {
+       checkbox.push({ checked: false, keyquantity: 1}); // Add one checkbox to each row
       });
     },
 
@@ -300,7 +259,7 @@ export default {
 .flex-container {
   display: flex;
   flex-direction: row;
-  margin: 250px 0px 0px 30px;
+ 
 }
 
 .checkbox-row {
