@@ -9,28 +9,106 @@
 -->
 
 <template>
-  
-    <div class="configurator">
+  <div class="flex-container" style="margin-top: 400px;">
+    <div class="configurator" >
       <div class="checkbox-row" v-for="(row, rowIndex) in rows" :key="rowIndex" >
         <div class="checkbox-item" v-for="(checkbox, colIndex) in row" :key="colIndex" v-show="colIndex < 1 ">
          <div class="flex-container"  v-show="colIndex < 1 ">
 
-          
-           <div   v-show="colIndex < 1 ">
-           <h3 v-show="rowIndex < 1 && colIndex < 1 ">        Pos.      </h3>
-           <UBadge v-show="colIndex < 1 " v-model="row.position" color="sky" size="lg" variant="solid" style="
-              
-              
-              
+          <!--Position-->
+           <div>
+           <h3 v-show="rowIndex < 1 && colIndex < 1 "> Pos. </h3>
+           <UBadge v-show="colIndex < 1 " v-model="checkbox.position" color="sky" size="lg" variant="solid" style="
+              width: 30px;
+              display: flex;
+              justify-content: center;
+              align-items: center;            
             ">
             {{ rowIndex + 1 }}
           </UBadge>
           </div>
+  
+          <!--Türbezeichnung-->
           <div class="door-designation"  v-show="colIndex < 1 ">
            <h3 v-show="rowIndex < 1 && colIndex < 1 ">Türbezeichnung</h3>
-           <UInput v-show="colIndex < 1 " v-model="row.doorDesignation" color="gray" size="sm" variant="outline" placeholder="z.B. Haupteingang"
-             />
+           <UInput v-show="colIndex < 1 " v-model="checkbox.doorDesignation" color="gray" size="sm" variant="outline" placeholder="z.B. Haupteingang"
+           style="width: 200px"/>
           </div>
+
+          <!--Zylinderanzahl-->
+          <div class="quantity">
+          <h3 v-show="rowIndex < 1">Anzahl</h3>
+             <UInput v-model="checkbox.doorquantity" min="1" class="quantity-input" color="gray" size="sm" type="number" variant="outline"
+            style="width: 70px" />
+           </div>
+
+          <!--Zylindertyp-->
+          <div class="cylinder-type">
+          <h3 v-show="rowIndex < 1">Zylinder-Typ</h3>
+           <USelectMenu v-model="checkbox.type" color="gray" :options="cylinderType" placeholder="Zylinder wählen..."
+             style="width: 200px" />
+          </div> 
+             
+
+
+
+
+        <div class="sizes" v-if="checkbox.type == 'Doppelzylinder' ||
+        checkbox.type == 'Knaufzylinder (innen)'
+        ">
+          <div class="outside">
+            <h3 v-show="rowIndex < 1">Außen</h3>
+            <USelectMenu v-model="checkbox.outside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
+          </div>
+          <div class="inside">
+            <h3 v-show="rowIndex < 1">Innen</h3>
+            <USelectMenu v-model="checkbox.inside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
+          </div>
+        </div>
+        <div class="sizes-halfcylinder" v-else-if="checkbox.type == 'Halbzylinder'">
+          <div class="outside">
+            <h3 v-show="rowIndex < 1">Außen</h3>
+            <USelectMenu v-model="checkbox.outside" color="gray" :options="sizes" placeholder="..." style="width: 70px" />
+          </div>
+          <div class="inside">
+            <h3 v-show="rowIndex < 1">Innen</h3>
+            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;10&nbsp;</UBadge>
+          </div>
+        </div>
+        <div class="sizes-empty" v-else>
+          <div class="outside">
+            <h3 v-show="rowIndex < 1">Außen</h3>
+            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
+          </div>
+          <div class="inside">
+            <h3 v-show="rowIndex < 1">Innen</h3>
+            <UBadge color="gray" variant="outline" size="lg" style="width: 70px">&nbsp;N/A&nbsp;</UBadge>
+          </div>
+        </div>
+        <div class="options"  v-if="checkbox.type == 'Doppelzylinder'"  >
+          <h3 v-show="rowIndex < 1">N&G-Funktion</h3>
+          <USelectMenu v-model="checkbox.options" :options="cylinderOptions" color="gray" placeholder="Optionen auswählen"
+            @click="resetOptions(rowIndex)" style="width: 200px" />
+        </div>
+        <div class="options-empty"  v-else  >
+          <h3 v-show="rowIndex < 1">N&G-Funktion</h3>
+          <UBadge color="gray" variant="outline" size="lg" style="width: 200px">&nbsp;N/A&nbsp;</UBadge>
+        </div>
+
+
+        <!--Zylinder löschen & duplizieren-->
+        <div class="duplicate">
+          <br v-show="rowIndex < 1" />
+          <UButton icon="i-heroicons-document-duplicate" size="sm" color="sky" variant="outline" :trailing="false"
+            @click="duplicateRow(rowIndex)" />
+        </div>
+        <div class="delete">
+          <br v-show="rowIndex < 1" />
+          <UButton icon="i-heroicons-trash" size="sm" color="red" variant="solid" :trailing="false"
+            @click="deleteRow(rowIndex)" />
+        </div>
+
+
        </div>
 
           
@@ -85,7 +163,7 @@
 
         </div>
 
-
+    
 
       </div>
 
@@ -99,11 +177,14 @@
           variant="solid" :trailing="false">Tür hinzufügen</UButton>
         <UButton class="test-button" @click="test" size="sm" color="amber" variant="solid" :trailing="false">Test
         </UButton>
+        
       </div>
+
     </div>
     <UButton class="add-key-button" icon="i-heroicons-plus-16-solid" @click="addCheckbox" size="sm" color="amber"
       variant="solid" :trailing="false">Schlüssel hinzufügen</UButton>
-  
+
+    </div>
 </template>
 
 <script>
@@ -237,15 +318,43 @@ export default {
     },
 
     test() {
-      this.rows[0][1].keyname = "Schlüssel 1";
-      this.rows[0].doorDesignation = "TürTest";
-      this.rows[2].doorDesignation = "TürTest 22";
-      this.rows[1].doorquantity = "5";
+      const columnStructure = {
+       checked: false,
+        keyquantity: 1,
+         };
+      this.rows = [];
+// Create 6 rows
+for (let i = 0; i < 6; i++) {
+    // Create an array for the current row
+    const row = [];
+
+    // Create 5 columns for each row
+    for (let j = 0; j < 5; j++) {
+      // Clone the column structure to avoid reference issues
+      const column = { ...columnStructure };
+      // Add any specific properties for the column here
+      // For example, setting a unique keyname for each column
+      column.keyname = `Schlüssel ${j + 1}`;
+
+      // Add the column to the row
+      row.push(column);
+    }
+
+    // Add the row to the rows array
+    this.rows.push(row);
+ }
+
+      
+      this.rows[0][0].keyname = "Schlüssel 1blubb";
+      this.rows[0][1].keyname = "Schlüssel 22ahahaha";
+      this.rows[0][0].doorDesignation = "TürTest";
+      this.rows[1][0].doorDesignation = "TürTest 22";
+      this.rows[0][0].doorquantity = "5";
       this.rows[0][1].keyquantity = "6"
-      this.rows[1].type = "Doppelzylinder";
-      this.rows[1].inside = "35";
-      this.rows[1].outside = "35";
-      this.rows[1].options = ["Not- & Gefahrenfunktion"];
+      this.rows[0][0].type = "Doppelzylinder";
+      this.rows[0][0].inside = "35";
+      this.rows[0][0].outside = "35";
+      this.rows[0][0].options = "Not- & Gefahrenfunktion";
       this.rows[1][1].checked = true;
       this.rows[1][2].checked = true;
       this.rows[3][2].checked = true;
